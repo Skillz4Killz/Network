@@ -26,7 +26,7 @@ This feature brings some of the common functionalities of other social networks 
   - #photos will show all your photos.
   - @subscribers role that will be pinged whenever you make a post on the wall
 - `.createprofile` begins a prompt style QA to create your profile.
-- `.match` tinder style RichDisplay showing most common matching people to meet. 
+- `.match` mathes you with other people on discord which you can scroll left or right to find the perfect match and get in contact.
 
 ## Server Templates
 
