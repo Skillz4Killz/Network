@@ -6,6 +6,7 @@ The bot adds some key functionalities to discord:
 
 - True social network
 - Server template networks
+- Meet similar new people
 
 ## Social Network Feature
 
@@ -26,4 +27,25 @@ This feature brings some of the common functionalities of other social networks 
   - @subscribers role that will be pinged whenever you make a post on the wall
 
 
+## Server Templates
 
+Something missing in discord is being able to make a new server using a template. 
+
+- `.template create school` => creates an entire server based on a school server templates. 
+  - @principles
+  - @teachers
+  - @parents
+  - @students
+  - @Guests
+  - A category for each class is created
+    - #homework-assignments
+    - #class-lessons
+    - #important-dates
+    - #study-group
+    - voice channels
+  - PTA Category
+    - #important-info
+    - #questions
+    - #meeting voice channels
+- `.template add` adds the current server as a template that you can reuse in other places.
+  
