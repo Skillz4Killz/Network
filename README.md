@@ -54,9 +54,10 @@ Something missing in discord is being able to make a new server using a template
   
 ## Developers
 
-- [Skillz4Killz](https://github.com/Skillz4Killz)
+- [Skillz4Killz](https://discord.gg/rWMuMdk)
 - [Charalampos Fanoulis](https://github.com/cfanoulis)
 - [VoidTecc](https://github.com/VoidCodes)
+- [tech_hutch](https://github.com/tech6hutch)
 
 ## How We Built It?
 
