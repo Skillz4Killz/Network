@@ -8,7 +8,9 @@ The bot adds some key functionalities to discord:
 - Server template networks
 - Meet similar new people
 
-## Social Network Feature
+## Features
+
+### Social Network Feature
 
 This feature brings some of the common functionalities of other social networks like twitter and Facebook to Discord. This bot helps make Discord be the only social network anyone would ever need.
 
@@ -28,7 +30,7 @@ This feature brings some of the common functionalities of other social networks 
 - `.createprofile` begins a prompt style QA to create your profile.
 - `.match` mathes you with other people on discord which you can scroll left or right to find the perfect match and get in contact.
 
-## Server Templates
+### Server Templates
 
 Something missing in discord is being able to make a new server using a template. 
 
@@ -50,3 +52,17 @@ Something missing in discord is being able to make a new server using a template
     - #meeting voice channels
 - `.template add` adds the current server as a template that you can reuse in other places.
   
+## Developers
+
+- [Skillz4Killz](https://github.com/Skillz4Killz)
+- [Charalampos Fanoulis](https://github.com/cfanoulis)
+- [VoidTecc](https://github.com/VoidCodes)
+
+## How We Built It?
+
+### Technology Used
+
+1. [NodeJS](https://nodejs.org) + [Typescript](https://github.com/Microsoft/TypeScript)- The languages used to code the bot.
+2. [Discord.JS](https://discord.js.org) - The Discord API wrapper used.
+3. [Klasa](https://klasa.js.org) - The best Discord.JS Framework that helps make bot development easier.
+4. [PostgreSQL](https://www.postgresql.org/) - Database used to store information needed to make the bot work like settings.
