@@ -1,6 +1,6 @@
 import { KlasaClient } from 'klasa'
 
-KlasaClient.userSchema
+KlasaClient.defaultUserSchema
 	.add('following', 'user', { array: true })
 	.add('profile', profileFolder => profileFolder
 		.add('serverID', 'guild')
