@@ -3,6 +3,7 @@ export {
 	KlasaMessage,
 	KlasaGuild,
 	KlasaClient,
+	Language
 } from 'klasa'
 
 export {
