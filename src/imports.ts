@@ -2,6 +2,7 @@ export {
 	CommandStore,
 	KlasaMessage,
 	KlasaGuild,
+	KlasaClient,
 } from 'klasa'
 
 export {
