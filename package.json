@@ -7,6 +7,12 @@
   "author": "The Network team",
   "license": "MIT",
   "private": true,
+  "contributors": [
+    "Skillz4Killz",
+    "Charalampos Fanoulis <hello-im@cfanoulis.me>",
+    "VoidTecc",
+    "tech6hutch"
+  ],
   "dependencies": {
     "bufferutil": "^4.0.1",
     "discord.js": "github:discordjs/discord.js",
