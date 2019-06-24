@@ -39,6 +39,7 @@ export default class extends SQLProvider {
 				connectionTimeoutMillis: 2000
 			}
 		}, this.client.options.providers.postgresql);
+
 		this.db = new Pool(Object.assign({
 			host: connection.host,
 			port: connection.port,
