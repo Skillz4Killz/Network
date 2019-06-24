@@ -65,17 +65,14 @@ export default class extends SQLProvider {
 			.catch(() => false);
 	}
 
-	createTable(table: string, rows) {
+	createTable(table: string, rows: any[]) {
 		if (rows) return this.run(`CREATE TABLE ${sanitizeKeyName(table)} (${rows.map(([k, v]) => `${sanitizeKeyName(k)} ${v}`).join(', ')});`);
-		const gateway = this.client.gateways[table];
+		const gateway = this.client.gateways.get(table);
 		if (!gateway) throw new Error(`There is no gateway defined with the name ${table} nor an array of rows with datatypes have been given. Expected any of either.`);
 
 		const schemaValues = [...gateway.schema.values(true)];
-		return this.run(`
-			CREATE TABLE ${sanitizeKeyName(table)} (
-				${[`id VARCHAR(${gateway.idLength || 18}) PRIMARY KEY NOT NULL UNIQUE`, ...schemaValues.map(this.qb.generateDatatype.bind(this.qb))].join(', ')}
-			)`
-		);
+		// @ts-ignore
+		return this.run(`CREATE TABLE ${sanitizeKeyName(table)} (${[`id VARCHAR(${gateway.idLength || 18}) PRIMARY KEY NOT NULL UNIQUE`, ...schemaValues.map(this.qb.generateDatatype.bind(this.qb))].join(', ')})`);
 	}
 
 	deleteTable(table) {
