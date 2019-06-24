@@ -10,7 +10,7 @@
         "sourceMap": true,
         "incremental": true,
         "lib": [
-                         "esnext",
+            "esnext",
             "esnext.array",
             "esnext.asynciterable",
             "esnext.intl",
