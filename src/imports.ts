@@ -3,6 +3,7 @@ export {
 	KlasaMessage,
 	KlasaGuild,
 	KlasaClient,
+  Language,
 	SQLProvider,
 	Type,
 	QueryBuilder,
