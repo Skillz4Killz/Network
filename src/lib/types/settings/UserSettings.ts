@@ -7,6 +7,8 @@ export namespace UserSettings {
 	export namespace Profile {
 		export type Language = string;
 		export const Language = 'profile.language';
+		export type ServerID = Snowflake;
+		export const ServerID = 'profile.serverID';
 	}
 
 }
