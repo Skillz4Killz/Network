@@ -1,9 +1,10 @@
 export {
+	Command,
 	CommandStore,
 	KlasaMessage,
 	KlasaGuild,
 	KlasaClient,
-  Language,
+	Language,
 	SQLProvider,
 	Type,
 	QueryBuilder,
@@ -16,4 +17,6 @@ export {
 export {
 	TextChannel,
 	Snowflake,
+	Message,
+	MessageEmbed,
 } from 'discord.js'
