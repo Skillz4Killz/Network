@@ -1,7 +1,8 @@
 import { Snowflake } from 'discord.js'
 
 export namespace GuildSettings {
-	export type Followers = Snowflake;
+	export type Followers = Snowflake[];
+	export const Followers = 'followers';
 
 	export namespace Channels {
 		export type TextChannelID = Snowflake;
