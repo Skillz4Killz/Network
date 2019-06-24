@@ -3,7 +3,14 @@ export {
 	KlasaMessage,
 	KlasaGuild,
 	KlasaClient,
-	Language
+  Language,
+	SQLProvider,
+	Type,
+	QueryBuilder,
+	SchemaEntry,
+	ProviderStore,
+	ProviderOptions,
+	util as klasaUtil,
 } from 'klasa'
 
 export {

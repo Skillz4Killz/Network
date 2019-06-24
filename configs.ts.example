@@ -1,5 +1,9 @@
 export default {
   botToken: '',
-  dbUser: '',
-  dbPassword: ''
+  postgresql: {
+    user: '',
+    password: '',
+    host: '',
+    port: 3000,
+  },
 }
