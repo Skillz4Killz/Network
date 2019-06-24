@@ -1,5 +1,5 @@
 {
-  "name": "Network",
+  "name": "network",
   "version": "0.0.1",
   "description": "A social bot",
   "main": "dist/index.js",
