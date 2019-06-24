@@ -1,0 +1,18 @@
+{
+  "name": "Network",
+  "version": "0.0.1",
+  "description": "A social bot",
+  "main": "dist/index.js",
+  "repository": "https://github.com/cfanoulis/Network.git",
+  "author": "The Network team",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "bufferutil": "^4.0.1",
+    "discord.js": "github:discordjs/discord.js",
+    "erlpack": "discordapp/erlpack",
+    "klasa": "github:dirigeants/klasa",
+    "pg": "^7.11.0",
+    "zlib-sync": "^0.1.4"
+  }
+}
