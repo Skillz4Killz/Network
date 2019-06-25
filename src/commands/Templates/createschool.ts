@@ -51,18 +51,19 @@ export default class extends Command {
 			]
 
 			const channels = [
-				{ name: 'important', permissionOverwrites: [{ id: teacherRole.id, allow: SEND_MESSAGES }, { id: message.guild.id, deny: SEND_MESSAGES }], type: DiscordChannelTypes.text },
-				{ name: 'homework-assignments', permissionOverwrites: [{ id: teacherRole.id, allow: SEND_MESSAGES }, { id: message.guild.id, deny: SEND_MESSAGES }], type: DiscordChannelTypes.text },
-				{ name: 'class-lessons', permissionOverwrites: [{ id: teacherRole.id, allow: SEND_MESSAGES }, { id: message.guild.id, deny: SEND_MESSAGES }], type: DiscordChannelTypes.text },
-				{ name: 'important-dates', permissionOverwrites: [{ id: teacherRole.id, allow: SEND_MESSAGES }, { id: message.guild.id, deny: SEND_MESSAGES }], type: DiscordChannelTypes.text },
+				{ name: 'important', permissionOverwrites: [{ id: teacherRole.id, allow: SEND_MESSAGES }, { id: message.guild.id, deny: VIEW_AND_SEND }], type: DiscordChannelTypes.text },
+				{ name: 'homework-assignments', permissionOverwrites: [{ id: teacherRole.id, allow: SEND_MESSAGES }, { id: message.guild.id, deny: VIEW_AND_SEND }], type: DiscordChannelTypes.text },
+				{ name: 'class-lessons', permissionOverwrites: [{ id: teacherRole.id, allow: SEND_MESSAGES }, { id: message.guild.id, deny: VIEW_AND_SEND }], type: DiscordChannelTypes.text },
+				{ name: 'important-dates', permissionOverwrites: [{ id: teacherRole.id, allow: SEND_MESSAGES }, { id: message.guild.id, deny: VIEW_AND_SEND }], type: DiscordChannelTypes.text },
 				{ name: 'main-chat', type: DiscordChannelTypes.text },
 				{ name: 'study-together', type: DiscordChannelTypes.text },
 				{ name: 'Class Meeting', permissionOverwrites: [], type: DiscordChannelTypes.voice },
 			]
 
 			for (const classData of classes) {
+				const categoryPermissions = [{ id: message.guild.id, deny: VIEW_CHANNEL }, { id: this.client.user.id, allow: VIEW_CHANNEL }, { id: classData.role.id, allow: VIEW_CHANNEL }]
 				// @ts-ignore
-				const category = await message.guild.channels.create(classData.name, { type: DiscordChannelTypes.category, permissionOverwrites: [{ id: message.guild.id, deny: VIEW_CHANNEL }, { id: this.client.user.id, allow: VIEW_CHANNEL }, { id: classData.role.id, allow: VIEW_CHANNEL }] })
+				const category = await message.guild.channels.create(classData.name, { type: DiscordChannelTypes.category, permissionOverwrites: categoryPermissions })
 
 				const channelIDs = []
 
@@ -72,7 +73,7 @@ export default class extends Command {
 					// Add the id to the array
 					channelIDs.push(channel.id)
 					// @ts-ignore
-					if (channelData.permissionOverwrites && channelData.permissionOverwrites.length) await channel.edit({ permissionOverwrites: [...channel.permissionOverwrites, ...channelData.permissionOverwrites] })
+					if (channelData.permissionOverwrites && channelData.permissionOverwrites.length) await channel.edit({ permissionOverwrites: [...categoryPermissions, ...channelData.permissionOverwrites] })
 				}
 
 				// Edit the embed
@@ -115,3 +116,5 @@ const roles = [
 
 const VIEW_CHANNEL = ['VIEW_CHANNEL']
 const SEND_MESSAGES = ['SEND_MESSAGES']
+const VIEW_AND_SEND = ['VIEW_CHANNEL', 'SEND_MESSAGES']
+
