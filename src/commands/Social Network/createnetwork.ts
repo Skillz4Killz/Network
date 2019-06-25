@@ -25,6 +25,7 @@ export default class extends Command {
 		// Create the initial embed
 		const embed = new MessageEmbed()
 			.setAuthor(message.author.tag, message.author.displayAvatarURL())
+			.setColor('RANDOM')
 			.setFooter('This message will update you on the progress. Please bare with me as I set up the entire server.')
 
 		try {
@@ -55,6 +56,7 @@ export default class extends Command {
 			// TODO: Send the first message like welcome to TwitCordBook or some joke
 			const startMessage = await wallChannel.sendEmbed(new MessageEmbed()
 				.setAuthor(message.author.tag, message.author.displayAvatarURL())
+				.setColor('RANDOM')
 				.setDescription(`It's time to ditch Twitter and Facebook. All-in-one voice and text chat social network that's free, secure, and works on both your desktop and phone. Stop risking your private info with Facebook and hassling with Twitter. Simplify your life.`)
 			) as Message
 			// Add the three custom reactions
