@@ -34,6 +34,6 @@
     "lint": "eslint src/*",
     "build": "tsc -p .",
     "start": "node dist/src/index.js",
-    "develop": "yarn build && yarn run:js"
+    "develop": "yarn build && yarn start"
   }
 }
