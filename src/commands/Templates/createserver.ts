@@ -1,6 +1,7 @@
-import { Command, CommandStore, KlasaMessage, TextChannel, GuildChannel, CategoryChannel, KlasaGuild } from '../../imports'
+import { Command, CommandStore, KlasaMessage, TextChannel, GuildChannel, CategoryChannel, KlasaGuild, MessageEmbed } from '../../imports'
 import { DiscordChannelTypes } from '../../lib/types/enums/DiscordJS';
 import { ClientSettings } from '../../lib/types/settings/ClientSettings';
+import { Message } from 'discord.js';
 
 export default class extends Command {
 	constructor(store: CommandStore, file: string[], directory: string) {
@@ -27,14 +28,20 @@ export default class extends Command {
 
 		// Find the guild using the id from the template
 		const guild = this.client.guilds.get(template.id)
+		// Create the initial embed
+		const embed = new MessageEmbed()
+			.setAuthor(message.author.tag, message.author.displayAvatarURL())
+			.setFooter('This message will update you on the progress. Please bare with me as I set up the entire server.')
 
 		try {
+			const response = await message.send(embed) as Message
 			// Clone all the roles first so we can use the roles in the channel permissions later
 			await Promise.all(guild.roles.map(role => message.guild.roles.create({ data: { name: role.name, color: role.color, hoist: role.hoist, permissions: role.permissions, mentionable: role.mentionable } })))
 
-			// First we need to create any channels that do not have a category
-			const noCategoryChannels = guild.channels.filter(channel => !channel.parentID)
-			for (const channel of noCategoryChannels.values()) {
+			// Tell the user we made the roles
+			await response.edit(embed.addField('Roles Created', message.guild.roles.map(role => `<@&${role.id}>`).join(' ')))
+
+			for (const channel of guild.channels.values()) {
 				// If this channel does not have any category
 				if (!channel.parentID) await this.handleChannelCreation(message, channel, guild)
 				// If this is not a category channel skip
