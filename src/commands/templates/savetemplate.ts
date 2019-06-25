@@ -5,29 +5,24 @@
 []Finally, test command
 */
 
-import {  Command, CommandStore, KlasaMessage } from '../../imports'
+import {  Command, CommandStore, KlasaMessage , KlasaGuild} from '../../imports'
+import { ClientSettings } from '../../lib/types/settings/ClientSettings';
 
 export default class extends Command {
-    constructor(store: CommandStore, file: string[], dir: string) {
-        super(store, file, dir, {
+    constructor(store: CommandStore, file: string[], directory: string) {
+        super(store, file, directory, {
             runIn: ['text'],
 			aliases: ['savetemp'],
-			permissionLevel: 7,
-			requiredPermissions: ['MANAGE_CHANNELS'],
+			permissionLevel: 4,
 			description: 'Saves the template',
-			usage: '<id:guild>'
+			usage: '<templateName:string>'
         })
     }
+  //KlasaGuild isnt reading from Iimports
+    async run(message: KlasaMessage, [guild: KlasaGuild]){
 
-    async run(msg: KlasaMessage){
+      await this.client.settings.update(ClientSettings.GuildTemplates, { name: 'templateName', id: message.guild.id })
 
-        if(msg.content === msg.guild.id) return msg.send('Please provide a guild id')
-
-        let guild = this.client.guilds.get('id')
-        if(!guild.id) return null
-
-        msg.author.settings.update(guild)
-
-        msg.send('Template saved')
+       message.send('Template saved')
     }
 }
