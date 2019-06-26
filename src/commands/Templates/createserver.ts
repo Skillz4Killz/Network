@@ -7,7 +7,7 @@ export default class extends Command {
 	constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			runIn: ['text'],
-			aliases: ['server', 'cs'],
+			aliases: ['cs'],
 			permissionLevel: 7,
 			requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES'],
 			description: 'Creates a server using a custom template.',
