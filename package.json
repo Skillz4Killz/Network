@@ -2,7 +2,7 @@
   "name": "network",
   "version": "0.0.1",
   "description": "A social bot",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "repository": "https://github.com/cfanoulis/Network.git",
   "author": "The Network team",
   "license": "MIT",
