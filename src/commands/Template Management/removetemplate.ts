@@ -7,7 +7,6 @@ export default class extends Command {
 			runIn: ['text'],
 			aliases: ['rt', 'rtemplate'],
 			permissionLevel: 7,
-			requiredPermissions: [],
 			description: 'Removes a template from our database',
 			usage: "<templateName:string>"
 		})
@@ -15,7 +14,13 @@ export default class extends Command {
 	
     async run(message: KlasaMessage, [templateName]: [string]): Promise<KlasaMessage> {
 		const templates = this.client.settings.get(ClientSettings.GuildTemplates) as ClientSettings.GuildTemplates;
-		const relevantTemplates = templates.find(t => t.name.toLower)
-				
+		const relevantTemplates = templates.find(t => t.name.toLowerCase() === templateName.toLowerCase());
+		if(!relevantTemplates) return message.channel.send("I couldn't find that template! Please check your spelling if you are ***sure*** that template exists") as any;
+		const templateGuild = this.client.guilds.get(relevantTemplates[0].id);
+		await templateGuild.members.fetch()
+		if(!templateGuild.members.get(message.author.id).hasPermission(Permissions.FLAGS.MANAGE_GUILD))	return message.channel.send("You don't seem to have enough permissions to do that! Only members of the template server with the `MANAGE SERVER` permission are allowed to delete templates") as any;
+		const newTemplates = templates.filter(t => t.name.toLowerCase() !== templateName.toLowerCase());
+		this.client.settings.update(ClientSettings.GuildTemplates, newTemplates, { arrayAction: "overwrite", throwOnError: true });
+		return message.channel.send("Template Deleted!") as any;
 	};
 };
