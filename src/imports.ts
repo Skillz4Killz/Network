@@ -19,4 +19,5 @@ export {
 	Snowflake,
 	Message,
 	MessageEmbed,
+	Permissions
 } from 'discord.js'
