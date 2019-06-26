@@ -19,6 +19,7 @@ export {
 	GuildChannel,
 	Message,
 	MessageEmbed,
+	Permissions,
 	Snowflake,
 	TextChannel,
 } from 'discord.js'
