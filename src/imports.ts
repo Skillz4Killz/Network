@@ -19,5 +19,4 @@ export {
 	Snowflake,
 	Message,
 	MessageEmbed,
-	Guild
 } from 'discord.js'

@@ -3,27 +3,17 @@ import { KlasaMessage, Monitor, MonitorStore } from 'klasa'
 export default class extends Monitor {
     constructor(file: string[], store: MonitorStore, directory: string) {
         super(file, store, directory, {
-            name: 'Reaction',
-            ignoreSelf: true,
-            ignoreBots: true,
-            enabled: true
+            ignoreOthers: false
         })
     }
 
     async run(message: KlasaMessage) {
 
-        if(!message.guild.me.hasPermission('ADD_REACTIONS')) return message.send('I have no perms to react!')
+        if(!message.guild.me.hasPermission('ADD_REACTIONS')) return null
 
-        let heartemote = this.client.emojis.get('💟')
-        let replayemote = this.client.emojis.get('🔁')
-        let followemote = this.client.emojis.get('➕')
-
-        let wallChannel = message.guild.settings.get('wall')
-        if(wallChannel)
-        message.react(heartemote)
-        message.react(replayemote)
-        message.react(followemote)
+        const wallChannel = message.guild.settings.get('wall')
         if(!wallChannel) return null
+        for(const reaction of ['💟', '🔁', '➕']) await message.react(reaction)
 
     }
 }

@@ -1,34 +1,29 @@
-/*
-[x]Use a customizeResponse to give a nice clean response when a Guild ID is not provided.
-[]Make sure to check if the guild id already exists and return a message saying this already exists
-[]ADD a guild id to the guild templates in the author.settings
-[]Finally, test command
-*/
-
-import {  Command, CommandStore, KlasaMessage } from '../../imports'
+import { Command, CommandStore, KlasaMessage } from '../../imports'
 import { ClientSettings } from '../../lib/types/settings/ClientSettings';
 
 export default class extends Command {
     constructor(store: CommandStore, file: string[], directory: string) {
-        super(store, file, directory, {
+      super(store, file, directory, {
       runIn: ['text'],
 			aliases: ['savetemp'],
-			permissionLevel: 4,
-			description: 'Saves the template',
+			permissionLevel: 7,
+			description: 'Saves this server as a template, so you can create another server with the same format.',
 			usage: '<templateName:string>'
-        })
+      })
+
+      this.customizeResponse('templateName', 'You did not provide a template name. Please try the command again and give a name you wish to save the template as.')
     }
   
     async run(message: KlasaMessage, [templateName]: [string]){
 
-      this.customizeResponse('templateName', 'Saving template...')
+      const templates = this.client.settings.get(ClientSettings.GuildTemplates) as ClientSettings.GuildTemplates
 
-      const template = this.client.settings.get(ClientSettings.GuildTemplates) as ClientSettings.GuildTemplates
+      const relevanttemp = templates.find(temp => temp.id === message.guild.id)
 
-      if(template) return message.send('This template exists already')
+      if(relevanttemp) return message.send(`This template already exists under the name of ${relevanttemp.name}`)
 
       await this.client.settings.update(ClientSettings.GuildTemplates, { name: templateName, id: message.guild.id })
 
-       message.send('Template saved')
+      return message.send(`The template has been saved with the name **${templateName}**. You can now add the bot to new server and type **.createserver ${templateName}** to create a copy of the server.`)
     }
 }
