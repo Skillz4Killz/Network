@@ -20,8 +20,4 @@ export {
 	Message,
 	MessageEmbed,
 	Guild
-<<<<<<< HEAD
 } from 'discord.js'
-=======
-} from 'discord.js'
->>>>>>> 65524d4fff575497431c1c346a5997c42c72af89

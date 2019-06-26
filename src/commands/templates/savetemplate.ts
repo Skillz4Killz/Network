@@ -5,7 +5,7 @@
 []Finally, test command
 */
 
-import {  Command, CommandStore, KlasaMessage , KlasaGuild} from '../../imports'
+import {  Command, CommandStore, KlasaMessage } from '../../imports'
 import { ClientSettings } from '../../lib/types/settings/ClientSettings';
 
 export default class extends Command {
