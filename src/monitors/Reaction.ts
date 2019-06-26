@@ -5,6 +5,7 @@ export default class extends Monitor {
         super(file, store, directory, {
             name: 'Reaction',
             ignoreSelf: true,
+            ignoreBots: true,
             enabled: true
         })
     }
@@ -13,9 +14,9 @@ export default class extends Monitor {
 
         if(!message.guild.me.hasPermission('ADD_REACTIONS')) return message.send('I have no perms to react!')
 
-        let heartemote = this.client.emojis.get('emojiID')
-        let replayemote = this.client.emojis.get('emojiID')
-        let followemote = this.client.emojis.get('emojiID')
+        let heartemote = this.client.emojis.get('💟')
+        let replayemote = this.client.emojis.get('🔁')
+        let followemote = this.client.emojis.get('➕')
 
         let wallChannel = message.guild.settings.get('wall')
         if(wallChannel)
