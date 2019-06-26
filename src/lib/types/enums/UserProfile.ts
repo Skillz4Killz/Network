@@ -1,11 +1,15 @@
 namespace UserProfile {
+    export enum Language {
+        EnUS = 'en-US',
+    }
+
     export enum Gender {
         Neutral,
         Male,
         Female,
         Nonbinary,
     }
-    
+
     export namespace Gender {
         export const length = Object.keys(Gender).length / 2;
 

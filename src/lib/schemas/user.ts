@@ -4,7 +4,10 @@ KlasaClient.defaultUserSchema
 	.add('following', 'user', { array: true })
 	.add('profile', profileFolder => profileFolder
 		.add('serverID', 'guild')
-		.add('language', 'string', { default: 'english' })
+		.add('language', 'string', {
+			array: true,
+			default: UserProfile.Language.EnUS,
+		})
 		.add('gender', 'integer', {
 			default: UserProfile.Gender.Neutral,
 			min: 0,

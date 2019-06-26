@@ -15,30 +15,51 @@ export default class extends Command {
     }
 
     getMatchesFor(user: KlasaUser): KlasaUser[] {
-        const [gender, lookingFor] = user.settings.pluck(
+        const [gender, lookingFor, age, languages] = user.settings.pluck(
             UserSettings.Profile.Gender,
             UserSettings.Profile.LookingFor,
+            UserSettings.Profile.Age,
+            UserSettings.Profile.Language,
         ) as [
             UserSettings.Profile.Gender,
             UserSettings.Profile.LookingFor,
+            UserSettings.Profile.Age,
+            UserSettings.Profile.Language,
         ];
         const genderFlag = UserProfile.GenderFlags.fromGender(gender);
 
         return this.client.users
             .array()
             .filter(u => {
-                const [otherGender, otherLookingFor] = u.settings.pluck(
+                const [otherGender, otherLookingFor, otherLanguages] = u.settings.pluck(
                     UserSettings.Profile.Gender,
                     UserSettings.Profile.LookingFor,
+                    UserSettings.Profile.Language,
                 ) as [
                     UserSettings.Profile.Gender,
                     UserSettings.Profile.LookingFor,
+                    UserSettings.Profile.Language,
                 ];
                 const otherGenderFlag = UserProfile.GenderFlags.fromGender(otherGender);
 
+                const rightLanguage = languages.some(lang => otherLanguages.some(otherLang => lang === otherLang));
                 const rightGender = (lookingFor & otherGenderFlag) !== 0;
                 const rightGenderForOther = (otherLookingFor & genderFlag) !== 0;
-                return rightGender && rightGenderForOther;
+                
+                return rightLanguage && rightGender && rightGenderForOther;
+            })
+            .sort((a, b) => {
+                const ageDiffs: UserSettings.Profile.Age[] = [];
+                for (const u of [a, b]) {
+                    const [otherAge] = u.settings.pluck(
+                        UserSettings.Profile.Age,
+                    ) as [
+                        UserSettings.Profile.Age,
+                    ];
+                    ageDiffs.push(Math.abs(otherAge - age));
+                }
+                const [aAgeDiff, bAgeDiff] = ageDiffs;
+                return aAgeDiff - bAgeDiff;
             })
     }
 
