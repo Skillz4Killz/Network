@@ -84,7 +84,7 @@ export default class extends Command {
 			await response.edit(embed)
 
 			// Update the settings with all the new channels and roles created
-			await message.guild.settings.update([[GuildSettings.Channels.FeedID, feedChannel.id], [GuildSettings.Channels.NotificationsID, notificationsChannel], [GuildSettings.Channels.PhotosID, photosChannel.id], [GuildSettings.Channels.WallID, wallChannel.id], [GuildSettings.Roles.SubscriberID, subscriberRole.id]], { throwOnError: true })
+			await message.guild.settings.update([[GuildSettings.Channels.FeedID, feedChannel.id], [GuildSettings.Channels.NotificationsID, notificationsChannel], [GuildSettings.Channels.PhotosID, photosChannel.id], [GuildSettings.Channels.WallID, wallChannel.id], [GuildSettings.Roles.SubscriberID, rolesCreated[0].id]], { throwOnError: true })
 
 			// Alert the user that it is done
 			return message.sendMessage('Your social Network profile has now been created.')
