@@ -9,6 +9,12 @@ export namespace UserSettings {
 		export const Language = 'profile.language';
 		export type ServerID = Snowflake;
 		export const ServerID = 'profile.serverID';
+		export type Gender = UserProfile.Gender;
+		export const Gender = 'profile.gender';
+		export type Age = number;
+		export const Age = 'profile.age';
+		export type LookingFor = UserProfile.GenderFlags;
+		export const LookingFor = 'profile.lookingFor';
 	}
 
 }
