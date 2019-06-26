@@ -31,7 +31,7 @@ export default class extends Command {
 		// Create the initial embed
 		const embed = new MessageEmbed()
 			.setAuthor(message.author.tag, message.author.displayAvatarURL())
-			.setFooter('This message will update you on the progress. Please bare with me as I set up the entire server.')
+			.setFooter('This message will update you on the progress. Please bear with me as I set up the entire server.')
 
 		try {
 			const response = await message.send(embed) as Message
@@ -39,7 +39,7 @@ export default class extends Command {
 			await Promise.all(guild.roles.map(role => message.guild.roles.create({ data: { name: role.name, color: role.color, hoist: role.hoist, permissions: role.permissions, mentionable: role.mentionable } })))
 
 			// Tell the user we made the roles
-			await response.edit(embed.addField('Roles Created', message.guild.roles.map(role => `<@&${role.id}>`).join(' ')))
+			await response.edit(embed.addField('Roles Created', message.guild.roles.map(role => role.toString()).join(' ')))
 
 			for (const channel of guild.channels.values()) {
 				// If this channel does not have any category
