@@ -25,7 +25,7 @@ export default class extends Command {
 
       const template = this.client.settings.get(ClientSettings.GuildTemplates) as ClientSettings.GuildTemplates
 
-      if(template.id) return message.send('This template exists already')
+      if(template) return message.send('This template exists already')
 
       await this.client.settings.update(ClientSettings.GuildTemplates, { name: templateName, id: message.guild.id })
 
