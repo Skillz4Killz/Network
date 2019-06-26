@@ -14,7 +14,7 @@ export default class extends Command {
 	
     async run(message: KlasaMessage, [templateName]: [string]): Promise<KlasaMessage> {
 		const templates = this.client.settings.get(ClientSettings.GuildTemplates) as ClientSettings.GuildTemplates;
-		const relevantTemplates = templates.find(t => t.name.toLowerCase() === templateName.toLowerCase());
+		const relevantTemplate = templates.find(t => t.name.toLowerCase() === templateName.toLowerCase());
 		if(!relevantTemplates) return message.channel.send("I couldn't find that template! Please check your spelling if you are ***sure*** that template exists") as any;
 		const templateGuild = this.client.guilds.get(relevantTemplates[0].id);
 		await templateGuild.members.fetch()
