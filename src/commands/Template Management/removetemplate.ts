@@ -22,6 +22,6 @@ export default class extends Command {
 		if(!member.hasPermission(Permissions.FLAGS.MANAGE_GUILD))	return message.sendMessage("You don't seem to have enough permissions to do that! Only members of the template server with the `MANAGE SERVER` permission are allowed to delete templates");
 		const newTemplates = templates.filter(t => t.name !== templateName.toLowerCase());
 		await this.client.settings.update(ClientSettings.GuildTemplates, newTemplates, { arrayAction: "overwrite", throwOnError: true });
-		return message.channel.send("Template Deleted!") as any;
+		return message.sendMessage("Template Deleted!");
 	};
 };
