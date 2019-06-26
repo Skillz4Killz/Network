@@ -33,7 +33,7 @@
   "scripts": {
     "lint": "eslint src/*",
     "build": "tsc -p .",
-    "run:js": "node dist/src/index.js",
-    "run": "yarn build && yarn run:js"
+    "start": "node dist/src/index.js",
+    "develop": "yarn build && yarn start"
   }
 }
