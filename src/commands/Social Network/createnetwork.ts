@@ -90,7 +90,7 @@ export default class extends Command {
 			return message.sendMessage('Your social Network profile has now been created.')
 		} catch (error) {
 			this.client.emit('error', error)
-			return message.sendMessage('Something went wrong in the social network creation. I have contacted my developers with the error report.')
+			return message.sendMessage('Something went wrong while your profile was being created. I have contacted my developers with the error report.')
 		}
 	}
 
