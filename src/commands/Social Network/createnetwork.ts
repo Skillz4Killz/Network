@@ -87,7 +87,7 @@ export default class extends Command {
 			await message.guild.settings.update([[GuildSettings.Channels.FeedID, feedChannel.id], [GuildSettings.Channels.NotificationsID, notificationsChannel], [GuildSettings.Channels.PhotosID, photosChannel.id], [GuildSettings.Channels.WallID, wallChannel.id], [GuildSettings.Roles.SubscriberID, subscriberRole.id]], { throwOnError: true })
 
 			// Alert the user that it is done
-			return message.sendMessage('Your social network has now been created.')
+			return message.sendMessage('Your social Network profile has now been created.')
 		} catch (error) {
 			this.client.emit('error', error)
 			return message.sendMessage('Something went wrong in the social network creation. I have contacted my developers with the error report.')
