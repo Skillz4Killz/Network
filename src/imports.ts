@@ -12,6 +12,7 @@ export {
 	SchemaEntry,
 	SQLProvider,
 	Type,
+	Task
 } from 'klasa'
 
 export {
