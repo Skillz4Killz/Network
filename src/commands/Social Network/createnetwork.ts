@@ -26,17 +26,17 @@ export default class extends Command {
 		const embed = new MessageEmbed()
 			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setColor('RANDOM')
-			.setFooter('This message will update you on the progress. Please bare with me as I set up the entire server.')
+			.setFooter('This message will update you on the progress. Please bear with me as I set up the entire server.')
 
 		try {
 			// Send the initial message telling the user to hold on
 			const response = await message.send(embed) as Message
 
 			// Create all the roles we need
-			const [subscriberRole] = await Promise.all(rolesToCreate.map(roleData => message.guild.roles.create({ data: { name: roleData.name, color: roleData.color, hoist: true } })));
+			const rolesCreated = await Promise.all(rolesToCreate.map(roleData => message.guild.roles.create({ data: { name: roleData.name, color: roleData.color, hoist: true } })));
 
 			// Edit the embed
-			embed.addField('Roles Created', subscriberRole)
+			embed.addField('Roles Created', rolesCreated.map(role => role.toString()).join(' '))
 			// Edit the message alerting the user the roles were created
 			await response.edit(embed)
 
@@ -84,7 +84,7 @@ export default class extends Command {
 			await response.edit(embed)
 
 			// Update the settings with all the new channels and roles created
-			await message.guild.settings.update([[GuildSettings.Channels.FeedID, feedChannel.id], [GuildSettings.Channels.NotificationsID, notificationsChannel], [GuildSettings.Channels.PhotosID, photosChannel.id], [GuildSettings.Channels.WallID, wallChannel.id], [GuildSettings.Roles.SubscriberID, subscriberRole.id]], { throwOnError: true })
+			await message.guild.settings.update([[GuildSettings.Channels.FeedID, feedChannel.id], [GuildSettings.Channels.NotificationsID, notificationsChannel], [GuildSettings.Channels.PhotosID, photosChannel.id], [GuildSettings.Channels.WallID, wallChannel.id], [GuildSettings.Roles.SubscriberID, rolesCreated[0].id]], { throwOnError: true })
 
 			// Alert the user that it is done
 			return message.sendMessage('Your social Network profile has now been created.')
