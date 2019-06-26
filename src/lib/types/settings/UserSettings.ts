@@ -15,6 +15,8 @@ export namespace UserSettings {
 		export const Age = 'profile.age';
 		export type LookingFor = UserProfile.GenderFlags;
 		export const LookingFor = 'profile.lookingFor';
+		export type OpenToVoiceChat = UserProfile.YesNoQuestion;
+		export const OpenToVoiceChat = 'profile.voiceChat';
 	}
 
 }

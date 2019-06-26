@@ -30,4 +30,10 @@ namespace UserProfile {
         export const fromGender = (gender: Gender): GenderFlags =>
             GenderFlags[Gender[gender]];
     }
+
+    export enum YesNoQuestion {
+        Skip = -1,
+        No = 0,
+        Yes = 1,
+    }
 }

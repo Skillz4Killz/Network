@@ -1,13 +1,15 @@
-import { Command, CommandStore, KlasaUser } from 'klasa';
+import { Command, CommandStore, KlasaUser, KlasaMessage } from 'klasa';
 import { UserSettings } from '../lib/types/settings/UserSettings';
 
 export default class extends Command {
 
     constructor(store: CommandStore, file: string[], directory: string) {
-        super(store, file, directory, {});
+        super(store, file, directory, {
+            description: 'Match with a new friend!',
+        });
     }
 
-    async run(msg) {
+    async run(msg: KlasaMessage) {
         // TODO: Send in embed, and allow cycling thru matches, obviously
         const matches = this.getMatchesFor(msg.author);
         if (matches.length === 0) return msg.send('No matches ;-;');
@@ -45,7 +47,7 @@ export default class extends Command {
                 const rightLanguage = languages.some(lang => otherLanguages.some(otherLang => lang === otherLang));
                 const rightGender = (lookingFor & otherGenderFlag) !== 0;
                 const rightGenderForOther = (otherLookingFor & genderFlag) !== 0;
-                
+
                 return rightLanguage && rightGender && rightGenderForOther;
             })
             .sort((a, b) => {
