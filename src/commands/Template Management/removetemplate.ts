@@ -1,7 +1,8 @@
-import { Command, CommandStore, KlasaMessage, Permissions } from "../../imports";
-import { ClientSettings } from "../../lib/types/settings/ClientSettings";
+import { Command, CommandStore, KlasaMessage, Permissions } from '../../imports';
+import { ClientSettings } from '../../lib/types/settings/ClientSettings';
 
 export default class extends Command {
+
 	constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			runIn: ['text'],
@@ -26,7 +27,8 @@ export default class extends Command {
 		if(!member.hasPermission(Permissions.FLAGS.MANAGE_GUILD)) return message.sendMessage("You don't seem to have enough permissions to do that! Only members of the template server with the `MANAGE SERVER` permission are allowed to delete templates");
 		// Finally, delete the template
 		const newTemplates = templates.filter(t => t.name !== templateName.toLowerCase());
-		await this.client.settings.update(ClientSettings.GuildTemplates, newTemplates, { arrayAction: "overwrite", throwOnError: true });
-		return message.sendMessage("Template Deleted!");
-	};
-};
+		await this.client.settings.update(ClientSettings.GuildTemplates, newTemplates, { arrayAction: 'overwrite', throwOnError: true });
+		return message.sendMessage('Template Deleted!');
+	}
+
+}
