@@ -17,7 +17,7 @@ export default class extends Command {
 		// Create the initial embed
 		const embed = new MessageEmbed()
 			.setAuthor(message.author.tag, message.author.displayAvatarURL())
-			.setFooter('This message will update you on the progress. Please bare with me as I set up the entire server.')
+			.setFooter('This message will update you on the progress. Please bear with me as I set up the entire server.')
 
 		try {
 			// Tell the user to wait while we make everything
