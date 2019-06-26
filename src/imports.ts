@@ -4,20 +4,22 @@ export {
 	KlasaMessage,
 	KlasaGuild,
 	KlasaClient,
+	util as klasaUtil,
 	Language,
-	SQLProvider,
-	Type,
-	QueryBuilder,
-	SchemaEntry,
 	ProviderStore,
 	ProviderOptions,
-	util as klasaUtil,
+	QueryBuilder,
+	SchemaEntry,
+	SQLProvider,
+	Type,
 } from 'klasa'
 
 export {
-	TextChannel,
-	Snowflake,
+	CategoryChannel,
+	GuildChannel,
 	Message,
 	MessageEmbed,
 	Permissions
+	Snowflake,
+	TextChannel,
 } from 'discord.js'
