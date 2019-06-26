@@ -58,7 +58,7 @@ export default class extends Command {
 				}
 			}
 
-			return message.sendMessage(`Your server has been created using the ${templateName} template.`)
+			return message.sendMessage(`Your server has been setup using the ${templateName} template.`)
 		} catch (error) {
 			this.client.emit('error', error)
 			return message.sendMessage('Something went wrong in the server creation. I have contacted my developers with the error report.')
