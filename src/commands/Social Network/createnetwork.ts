@@ -11,7 +11,7 @@ export default class extends Command {
 			aliases: ['network', 'cn'],
 			permissionLevel: 7,
 			requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
-			description: 'Creates your twitter/facebook page server.',
+			description: 'Creates your Network profile server.',
 			extendedHelp: ''
 		})
 	}
