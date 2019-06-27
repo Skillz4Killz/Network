@@ -1,3 +1,4 @@
+
 import { Command, CommandStore, KlasaMessage, Permissions } from '../../imports';
 import { ClientSettings } from '../../lib/types/settings/ClientSettings';
 
@@ -9,6 +10,7 @@ export default class extends Command {
 			aliases: ['rt', 'rtemplate'],
 			permissionLevel: 7,
 			description: 'Removes a template from our database',
+
 			usage: '<templateName:string>'
 		});
 	}

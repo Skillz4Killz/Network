@@ -34,6 +34,7 @@ export default class extends Command {
 			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setFooter('This message will update you on the progress. Please bear with me as I set up the entire server.');
 
+
 		try {
 			const response = await message.send(embed) as Message;
 			// Clone all the roles first so we can use the roles in the channel permissions later
@@ -41,6 +42,7 @@ export default class extends Command {
 
 			// Tell the user we made the roles
 			await response.edit(embed.addField('Roles Created', message.guild.roles.map(role => role.toString()).join(' ')));
+
 
 			for (const channel of guild.channels.values()) {
 				// If this channel does not have any category
