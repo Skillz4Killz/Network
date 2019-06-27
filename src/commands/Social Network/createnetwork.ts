@@ -4,9 +4,13 @@ import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { TextChannel } from 'discord.js';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
 
+const rolesToCreate = [
+	{ name: 'Subscriber', color: 'random' }
+];
+
 export default class extends Command {
 
-	constructor(store: CommandStore, file: string[], directory: string) {
+	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			runIn: ['text'],
 			aliases: ['network', 'cn'],
@@ -17,7 +21,7 @@ export default class extends Command {
 		});
 	}
 
-	async run(message: KlasaMessage) {
+	public async run(message: KlasaMessage) {
 		const wallChannelID = message.guild.settings.get(GuildSettings.Channels.WallID) as GuildSettings.Channels.TextChannelID;
 		const userProfileServerID = message.author.settings.get(UserSettings.Profile.ServerID) as UserSettings.Profile.ServerID;
 
@@ -98,7 +102,3 @@ export default class extends Command {
 	}
 
 }
-
-const rolesToCreate = [
-	{ name: 'Subscriber', color: 'random' }
-];

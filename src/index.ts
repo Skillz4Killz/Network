@@ -7,7 +7,7 @@ import './lib/schemas/user';
 
 new KlasaClient({
 	commandEditing: true,
-	owners: ['130136895395987456'],
+	owners: configs.owners,
 	prefix: '.',
 	providers: {
 		'default': 'postgresql',
