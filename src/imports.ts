@@ -2,6 +2,7 @@ export {
 	Command,
 	CommandStore,
 	Event,
+	EventStore,
 	KlasaMessage,
 	KlasaGuild,
 	KlasaClient,

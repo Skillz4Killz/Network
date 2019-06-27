@@ -1,32 +1,36 @@
-import { Event, TextChannel, KlasaMessage, KlasaUser, Message } from '../imports';
+import { Event, EventStore, TextChannel, KlasaMessage, KlasaUser, Message } from '../imports';
 import { RawMessageReactionAdd, RawEmoji } from '../lib/types/discord';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { UserSettings } from '../lib/types/settings/UserSettings';
 
 export default class extends Event {
 
-	// This tells Klasa to use the raw event
-	public emitter = this.client.ws;
-	// This tells Klasa the event to listen to
-	public name = 'MESSAGE_REACTION_ADD';
+	public constructor(store: EventStore, file: string[], directory: string) {
+		super(store, file, directory, { name: 'MESSAGE_REACTION_ADD', emitter: store.client.ws });
+	}
 
 	public async run(data: RawMessageReactionAdd) {
+		this.client.console.log('1 client');
+		console.log('1');
 		try {
+			console.log('2');
 			// Fetch the channel the reaction was on
 			const channel = this.client.channels.get(data.channel_id) as TextChannel;
+			console.log(data.channel_id, channel.type);
 			// If the reaction is on DM or something we can ignore
-			if (!channel || channel.type === 'text') return null;
-
+			if (!channel || channel.type !== 'text') return null;
+			console.log('3');
 			// Fetch the message using the channel fetched above
 			const message = await channel.messages.fetch(data.message_id) as KlasaMessage;
 			if (!message) return null;
-
+			console.log('4');
 			// Fetch the user that reacted to the message
 			const user = await this.client.users.fetch(data.user_id);
-			if (!user) return null;
-
+			// If its a bot or doesnt exist cancel out
+			if (!user || user.bot) return null;
+			console.log('5');
 			const [wallChannelID, feedChannelID] = message.guild.settings.pluck(GuildSettings.Channels.WallID, GuildSettings.Channels.FeedID);
-
+			console.log('6', wallChannelID, feedChannelID, channel.id);
 			switch (channel.id) {
 				// If it is one of the profile channels run the profile reaction handler
 				case feedChannelID:
@@ -35,27 +39,29 @@ export default class extends Event {
 				default: return null;
 			}
 		} catch (error) {
+			console.log('in catch');
 			return this.client.emit('error', error);
 		}
 	}
 
 	public async handleProfileReaction(message: KlasaMessage, user: KlasaUser, emoji: RawEmoji) {
+		console.log('7', emoji);
 		try {
 			const postEmbed = message.embeds[0];
 
 			// Get the author id for the original author
 			const originalAuthorID = postEmbed && postEmbed.footer && postEmbed.footer.text;
 			if (!originalAuthorID) return null;
-
+			console.log('8');
 			const originalAuthor = await this.client.users.fetch(originalAuthorID);
 			if (!originalAuthor) return null;
-
+			console.log('9');
 			const serverID = originalAuthor.settings.get(UserSettings.Profile.ServerID) as UserSettings.Profile.ServerID;
 			if (!serverID) return null;
-
+			console.log('10');
 			const guild = this.client.guilds.get(serverID);
 			if (!guild) return null;
-
+			console.log('11');
 			const [notificationChannelID, wallChannelID] = guild.settings.pluck(GuildSettings.Channels.NotificationsID, GuildSettings.Channels.WallID);
 
 			switch (emoji.name) {
@@ -63,6 +69,7 @@ export default class extends Event {
 					if (notificationChannelID) {
 						const notificationChannel = this.client.channels.get(notificationChannelID) as TextChannel;
 						if (!notificationChannel) return null;
+						console.log('liked');
 						// Send a notification to the original authors notification channel saying x user liked it
 						await notificationChannel.send(`${user.tag} has liked your post in ${message.guild.name} guild.`);
 						// Post the original embed so the user knows which post was liked
@@ -74,9 +81,10 @@ export default class extends Event {
 
 					return null;
 				case '🔁': {
+					console.log('retweeted');
 					// If the reacting user doesnt have a wall channel tell cancel out
 					const wallChannel = this.client.channels.get(wallChannelID) as TextChannel;
-					if (!wallChannelID || wallChannel) return message.channel.send('You have not set up your own profile server, so I am unable to repost this to your #wall. Please invite me to your private server and run the **.createnetwork** command.').then(response => (response as Message).delete({ timeout: 5000 }));
+					if (!wallChannelID || !wallChannel) return message.channel.send('You have not set up your own profile server, so I am unable to repost this to your #wall. Please invite me to your private server and run the **.createnetwork** command.').then(response => (response as Message).delete({ timeout: 5000 }));
 
 					// Repost this message on the user, that reacted, wall channel
 					const reposted = await wallChannel.send(postEmbed) as Message;
@@ -98,7 +106,7 @@ export default class extends Event {
 				case '➕': {
 					// Follow the original author profile server
 					const following = user.settings.get(UserSettings.Following) as UserSettings.Following;
-					await user.settings.update(UserSettings.Following, guild.id, { throwOnError: true });
+					await user.settings.update(UserSettings.Following, originalAuthorID, { throwOnError: true });
 
 					// Remove the reaction that the user added so they can react again
 					await message.reactions.get(emoji.id).users.remove(user.id);
