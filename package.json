@@ -16,7 +16,6 @@
   "dependencies": {
     "bufferutil": "^4.0.1",
     "discord.js": "github:discordjs/discord.js",
-    "erlpack": "discordapp/erlpack",
     "klasa": "github:dirigeants/klasa#settings",
     "pg": "^7.11.0",
     "zlib-sync": "^0.1.4"
