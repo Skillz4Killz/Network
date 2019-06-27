@@ -261,13 +261,6 @@ emoji-regex@^7.0.1:
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-7.0.3.tgz#933a04052860c85e83c122479c4748a8e4c72156"
   integrity sha512-CwBLREIQ7LvYFB0WyRvwhq5N5qPhc6PMjD6bYggFlI5YyDgl+0vxq5VHbMOFqLg7hfWzmu8T5Z1QofhmTIhItA==
 
-erlpack@discordapp/erlpack:
-  version "0.1.0"
-  resolved "https://codeload.github.com/discordapp/erlpack/tar.gz/1df303c7f3719289ef07be6abae19c294169113f"
-  dependencies:
-    bindings "^1.2.1"
-    nan "^2.1.0"
-
 escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
@@ -593,7 +586,7 @@ json-stable-stringify-without-jsonify@^1.0.1:
   version "0.5.0-dev"
   resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/9f8de676eeb89515aaf503749bd958f31fdfa74a"
   dependencies:
-    fs-nextra "^0.4.5"
+    fs-nextra "^0.4.3"
 
 levn@^0.3.0, levn@~0.3.0:
   version "0.3.0"
