@@ -18,7 +18,8 @@ export default class extends Command {
 	}
 
 	async run(message: KlasaMessage) {
-		const [wallChannelID, userProfileServerID] = message.guild.settings.pluck(GuildSettings.Channels.WallID, UserSettings.Profile.ServerID);
+		const wallChannelID = message.guild.settings.get(GuildSettings.Channels.WallID) as GuildSettings.Channels.TextChannelID;
+		const userProfileServerID = message.author.settings.get(UserSettings.Profile.ServerID) as UserSettings.Profile.ServerID;
 
 		if (wallChannelID) return message.sendMessage('Sorry, this server already has a setup for the social network. This command only works when the server is not setup. Please create a new server, invite the bot and try this command again.');
 		if (userProfileServerID) return message.sendMessage(`Sorry, you can only have one profile server. You have set ${this.client.guilds.get(userProfileServerID).name} as your profile server.`);
