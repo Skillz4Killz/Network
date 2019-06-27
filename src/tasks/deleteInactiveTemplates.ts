@@ -23,7 +23,7 @@ export default class extends Task {
         await this.client.settings.update(ClientSettings.GuildTemplates, newTemplates, { arrayAction: "overwrite", throwOnError: true })
     }
 
-    async init(): Promise<void> {
+    async init() {
         this.client.schedule.create('deleteInactiveTemplates', '@daily', { id: "dia", catchUp: false});
     }
 };
