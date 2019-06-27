@@ -64,7 +64,10 @@ export default class extends Command {
 			const startMessage = await wallChannel.sendEmbed(new MessageEmbed()
 				.setAuthor(message.author.tag, message.author.displayAvatarURL())
 				.setColor('RANDOM')
-				.setDescription(`It's time to ditch Twitter and Facebook. All-in-one voice and text chat social network that's free, secure, and works on both your desktop and phone. Stop risking your private info with Facebook and hassling with Twitter. Simplify your life.`)) as Message;
+				.setDescription(`It's time to ditch Twitter and Facebook. All-in-one voice and text chat social network that's free, secure, and works on both your desktop and phone. Stop risking your private info with Facebook and hassling with Twitter. Simplify your life.`)
+				.setFooter(message.author.id)
+				.setTimestamp()) as Message;
+
 			// Add the three custom reactions
 			for (const reaction of ['❤', '🔁', '➕']) startMessage.react(reaction);
 

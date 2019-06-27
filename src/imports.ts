@@ -5,6 +5,7 @@ export {
 	KlasaMessage,
 	KlasaGuild,
 	KlasaClient,
+	KlasaUser,
 	util as klasaUtil,
 	Language,
 	ProviderStore,
@@ -14,7 +15,7 @@ export {
 	SQLProvider,
 	Type,
 	Task
-} from 'klasa'
+} from 'klasa';
 
 export {
 	CategoryChannel,
