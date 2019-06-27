@@ -20,7 +20,7 @@ export default class extends Command {
 			const isAlreadyFollowing = following.includes(user.id);
 
 			// Toggle the user in SG
-			await user.settings.update(UserSettings.Following, user.id, { throwOnError: true });
+			await message.author.settings.update(UserSettings.Following, user.id, { throwOnError: true });
 
 			return message.sendMessage(`Successfully ${isAlreadyFollowing ? 'un' : ''}followed ${user.username}`);
 		} catch (e) {
