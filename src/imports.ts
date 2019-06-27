@@ -8,7 +8,6 @@ export {
 	KlasaClient,
 	KlasaUser,
 	util as klasaUtil,
-	KlasaUser,
 	Language,
 	ProviderStore,
 	ProviderOptions,
