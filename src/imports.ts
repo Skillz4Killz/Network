@@ -12,8 +12,9 @@ export {
 	QueryBuilder,
 	SchemaEntry,
 	SQLProvider,
-	Type
-} from 'klasa';
+	Type,
+	Task
+} from 'klasa'
 
 export {
 	CategoryChannel,
