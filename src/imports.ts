@@ -4,6 +4,7 @@ export {
 	KlasaMessage,
 	KlasaGuild,
 	KlasaClient,
+	KlasaUser,
 	Language,
 	SQLProvider,
 	Type,
