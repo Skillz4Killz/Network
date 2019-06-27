@@ -209,7 +209,7 @@ export default class extends SQLProvider {
  * @param {string} value The string to sanitize as a key
  * @returns {string}
  * @private
-*/
+ */
 function sanitizeKeyName(value: string) {
 	if (typeof value !== 'string') throw new TypeError(`[SANITIZE_NAME] Expected a string, got: ${new Type(value)}`);
 	if (/`|"/.test(value)) throw new TypeError(`Invalid input (${value}).`);
@@ -218,11 +218,12 @@ function sanitizeKeyName(value: string) {
 }
 
 
-/** @param {number} [min] The minimum value
+/**
+ * @param {number} [min] The minimum value
  * @param {number} [max] The maximum value
  * @returns {string}
  * @private
-*/
+ */
 function parseRange(min: number, max: number) {
 	// Min value validation
 	if (typeof min === 'undefined') return '';
