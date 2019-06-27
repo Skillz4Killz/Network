@@ -14,7 +14,7 @@ export default class extends Command {
 			runIn: ['text'],
 			aliases: ['network', 'cn'],
 			permissionLevel: 7,
-			requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
+			requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY', 'MANAGE_MESSAGES'],
 			description: 'Creates your Network profile server.',
 			extendedHelp: ''
 		});
