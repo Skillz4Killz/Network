@@ -13,7 +13,7 @@ export {
 	SQLProvider,
 	Type,
 	Task
-} from 'klasa'
+} from 'klasa';
 
 export {
 	CategoryChannel,
