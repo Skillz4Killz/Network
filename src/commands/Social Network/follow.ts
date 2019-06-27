@@ -5,7 +5,7 @@ export default class extends Command {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: 'Follows/Unfollows a user, thus mkaing his posts appear in your feed',
+			description: 'Follows/unfollows a user, thus making his posts appear in your feed.',
 			usage: '<user:user>'
 		});
 	}
