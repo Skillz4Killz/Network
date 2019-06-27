@@ -57,7 +57,7 @@ export default class extends SQLProvider {
 		return this.db.end();
 	}
 
-	/* Table methods */
+	// Table methods
 
 	public hasTable(table: string) {
 		return this.runAll(`SELECT true FROM pg_tables WHERE tablename = '${table}';`)
@@ -84,7 +84,7 @@ export default class extends SQLProvider {
 			.then(result => Number(result.count));
 	}
 
-	/* Row methods */
+	// Row methods
 
 	public getAll(table: string, entries = []) {
 		if (entries.length) {
@@ -216,6 +216,7 @@ function sanitizeKeyName(value: string) {
 	if (value.charAt(0) === '"' && value.charAt(value.length - 1) === '"') return value;
 	return `"${value}"`;
 }
+
 
 /**
  * @param {number} [min] The minimum value
