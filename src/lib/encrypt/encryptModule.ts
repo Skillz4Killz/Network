@@ -1,24 +1,19 @@
 import { createCipher, createDecipher } from 'crypto';
+import config from '../../../configs';
 
+const algorithm = 'aes-192-ctr';
 
+// eslint-disable-next-line
 export default class Encrypt {
 
-	protected algo: string;
-	private key: string;
-
-	public constructor(key: string) {
-		this.key = key;
-		this.algo = 'aes-192-ctr';
-	}
-
-	public encrypt(text: string) {
-		const cipher = createCipher(this.algo, this.key);
+	public static encrypt(text: string) {
+		const cipher = createCipher(algorithm, config.encryptPassword);
 		cipher.update(text, 'utf8', 'base64');
 		return cipher.final('base64');
 	}
 
-	public decrypt(text: string) {
-		const cipher = createDecipher(this.algo, this.key);
+	public static decrypt(text: string) {
+		const cipher = createDecipher(algorithm, config.encryptPassword);
 		cipher.update(text, 'base64', 'utf8');
 		return cipher.final('utf8');
 	}
