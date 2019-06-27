@@ -1,7 +1,6 @@
-import { Command, CommandStore, KlasaMessage, MessageEmbed, Message } from '../../imports';
+import { Command, CommandStore, KlasaMessage, MessageEmbed, Message, TextChannel } from '../../imports';
 import { DiscordChannelTypes } from '../../lib/types/enums/DiscordJS';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { TextChannel } from 'discord.js';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
 
 const rolesToCreate = [
@@ -64,7 +63,10 @@ export default class extends Command {
 			const startMessage = await wallChannel.sendEmbed(new MessageEmbed()
 				.setAuthor(message.author.tag, message.author.displayAvatarURL())
 				.setColor('RANDOM')
-				.setDescription(`It's time to ditch Twitter and Facebook. All-in-one voice and text chat social network that's free, secure, and works on both your desktop and phone. Stop risking your private info with Facebook and hassling with Twitter. Simplify your life.`)) as Message;
+				.setDescription(`It's time to ditch Twitter and Facebook. All-in-one voice and text chat social network that's free, secure, and works on both your desktop and phone. Stop risking your private info with Facebook and hassling with Twitter. Simplify your life.`)
+				.setFooter(message.author.id)
+				.setTimestamp()) as Message;
+
 			// Add the three custom reactions
 			for (const reaction of ['❤', '🔁', '➕']) startMessage.react(reaction);
 
@@ -91,7 +93,8 @@ export default class extends Command {
 
 			// Update the settings with all the new channels and roles created
 			await message.guild.settings.update([[GuildSettings.Channels.FeedID, feedChannel.id], [GuildSettings.Channels.NotificationsID, notificationsChannel], [GuildSettings.Channels.PhotosID, photosChannel.id], [GuildSettings.Channels.WallID, wallChannel.id], [GuildSettings.Roles.SubscriberID, rolesCreated[0].id]], { throwOnError: true });
-
+			// Update the user settings
+			await message.author.settings.update(UserSettings.Profile.ServerID, message.guild.id, { throwOnError: true });
 
 			// Alert the user that it is done
 			return message.sendMessage('Your social Network profile has now been created.');
