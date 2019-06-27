@@ -1,4 +1,5 @@
 import { Snowflake } from 'discord.js';
+import { UserProfile } from '../enums/UserProfile';
 
 export namespace UserSettings {
 	export type Following = Snowflake[];

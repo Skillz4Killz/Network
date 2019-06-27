@@ -1,39 +1,39 @@
-namespace UserProfile {
-    export enum Language {
-        EnUS = 'en-US',
-    }
+export namespace UserProfile {
+	export enum Language {
+		EnUS = 'en-US'
+	}
 
-    export enum Gender {
-        Neutral,
-        Male,
-        Female,
-        Nonbinary,
-    }
+	export enum Gender {
+		Neutral,
+		Male,
+		Female,
+		Nonbinary
+	}
 
-    export namespace Gender {
-        export const length = Object.keys(Gender).length / 2;
+	export namespace Gender {
+		export const length = Object.keys(Gender).length / 2;
 
-        export const fromGenderFlag = (flag: GenderFlags): Gender =>
-            Gender[GenderFlags[flag]];
-    }
+		export const fromGenderFlag = (flag: GenderFlags): Gender =>
+			Gender[GenderFlags[flag]];
+	}
 
-    export enum GenderFlags {
-        Neutral    = 0,
-        Male       = 1 << 0,
-        Female     = 1 << 1,
-        Nonbinary  = 1 << 2,
+	export enum GenderFlags {
+		Neutral = 0,
+		Male = 1 << 0,
+		Female = 1 << 1,
+		Nonbinary = 1 << 2,
 
-        All = Male | Female | Nonbinary,
-    }
+		All = Male | Female | Nonbinary
+	}
 
-    export namespace GenderFlags {
-        export const fromGender = (gender: Gender): GenderFlags =>
-            GenderFlags[Gender[gender]];
-    }
+	export namespace GenderFlags {
+		export const fromGender = (gender: Gender): GenderFlags =>
+			GenderFlags[Gender[gender]];
+	}
 
-    export enum YesNoQuestion {
-        Skip = -1,
-        No = 0,
-        Yes = 1,
-    }
+	export enum YesNoQuestion {
+		Skip = -1,
+		No = 0,
+		Yes = 1
+	}
 }
