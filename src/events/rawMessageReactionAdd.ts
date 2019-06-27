@@ -106,7 +106,7 @@ export default class extends Event {
 					await user.settings.update(UserSettings.Following, originalAuthorID, { throwOnError: true });
 
 					// Remove the reaction that the user added so they can react again
-					await message.reactions.get(emoji.id).users.remove(user.id);
+					await message.reactions.get(emoji.name).users.remove(user.id);
 					// Send a response saying you are now following or no longer following
 					return message.channel.send(`You are ${following.includes(originalAuthorID) ? 'no longer' : 'now'} following this user.`).then(response => (response as Message).delete({ timeout: 5000 }));
 				}
