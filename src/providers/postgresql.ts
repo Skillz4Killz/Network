@@ -57,7 +57,7 @@ export default class extends SQLProvider {
 		return this.db.end();
 	}
 
-	// Table methods 
+	// Table methods
 
 	public hasTable(table: string) {
 		return this.runAll(`SELECT true FROM pg_tables WHERE tablename = '${table}';`)
@@ -84,7 +84,7 @@ export default class extends SQLProvider {
 			.then(result => Number(result.count));
 	}
 
-	// Row methods 
+	// Row methods
 
 	public getAll(table: string, entries = []) {
 		if (entries.length) {
@@ -205,11 +205,11 @@ export default class extends SQLProvider {
 
 }
 
-
- //* @param {string} value The string to sanitize as a key
- //* @returns {string}
- //* @private
- 
+/**
+ * @param {string} value The string to sanitize as a key
+ * @returns {string}
+ * @private
+*/
 function sanitizeKeyName(value: string) {
 	if (typeof value !== 'string') throw new TypeError(`[SANITIZE_NAME] Expected a string, got: ${new Type(value)}`);
 	if (/`|"/.test(value)) throw new TypeError(`Invalid input (${value}).`);
@@ -218,11 +218,11 @@ function sanitizeKeyName(value: string) {
 }
 
 
- //* @param {number} [min] The minimum value
- //* @param {number} [max] The maximum value
- //* @returns {string}
- //* @private
- //
+/** @param {number} [min] The minimum value
+ * @param {number} [max] The maximum value
+ * @returns {string}
+ * @private
+*/
 function parseRange(min: number, max: number) {
 	// Min value validation
 	if (typeof min === 'undefined') return '';
