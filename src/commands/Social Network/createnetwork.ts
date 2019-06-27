@@ -4,9 +4,13 @@ import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { TextChannel } from 'discord.js';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
 
+const rolesToCreate = [
+	{ name: 'Subscriber', color: 'random' }
+];
+
 export default class extends Command {
 
-	constructor(store: CommandStore, file: string[], directory: string) {
+	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			runIn: ['text'],
 			aliases: ['network', 'cn'],
@@ -17,8 +21,9 @@ export default class extends Command {
 		});
 	}
 
-	async run(message: KlasaMessage) {
-		const [wallChannelID, userProfileServerID] = message.guild.settings.pluck(GuildSettings.Channels.WallID, UserSettings.Profile.ServerID);
+	public async run(message: KlasaMessage) {
+		const wallChannelID = message.guild.settings.get(GuildSettings.Channels.WallID) as GuildSettings.Channels.TextChannelID;
+		const userProfileServerID = message.author.settings.get(UserSettings.Profile.ServerID) as UserSettings.Profile.ServerID;
 
 		if (wallChannelID) return message.sendMessage('Sorry, this server already has a setup for the social network. This command only works when the server is not setup. Please create a new server, invite the bot and try this command again.');
 		if (userProfileServerID) return message.sendMessage(`Sorry, you can only have one profile server. You have set ${this.client.guilds.get(userProfileServerID).name} as your profile server.`);
@@ -97,7 +102,3 @@ export default class extends Command {
 	}
 
 }
-
-const rolesToCreate = [
-	{ name: 'Subscriber', color: 'random' }
-];

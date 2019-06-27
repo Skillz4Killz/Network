@@ -4,13 +4,13 @@ import { Pool, PoolClient } from 'pg';
 
 export default class extends SQLProvider {
 
-	dbconnection!: PoolClient;
-	db!: Pool;
-	qb: QueryBuilder;
+	public qb: QueryBuilder;
+	public replace = this.update;
 
-	replace = this.update;
+	private dbconnection!: PoolClient;
+	private db!: Pool;
 
-	constructor(store: ProviderStore, file: string[], directory: string, options?: ProviderOptions) {
+	public constructor(store: ProviderStore, file: string[], directory: string, options?: ProviderOptions) {
 		super(store, file, directory, options);
 
 		this.qb = new QueryBuilder({
@@ -28,7 +28,7 @@ export default class extends SQLProvider {
 			.add('json', { 'extends': 'any' });
 	}
 
-	async init() {
+	public async init() {
 		const connection = klasaUtil.mergeDefault({
 			host: 'localhost',
 			port: 5432,
@@ -52,20 +52,20 @@ export default class extends SQLProvider {
 		this.dbconnection = await this.db.connect();
 	}
 
-	shutdown() {
+	public shutdown() {
 		this.dbconnection.release();
 		return this.db.end();
 	}
 
 	/* Table methods */
 
-	hasTable(table: string) {
+	public hasTable(table: string) {
 		return this.runAll(`SELECT true FROM pg_tables WHERE tablename = '${table}';`)
 			.then(result => result.length !== 0 && result[0].bool === true)
 			.catch(() => false);
 	}
 
-	createTable(table: string, rows: any[]) {
+	public createTable(table: string, rows: any[]) {
 		if (rows) return this.run(`CREATE TABLE ${sanitizeKeyName(table)} (${rows.map(([k, v]) => `${sanitizeKeyName(k)} ${v}`).join(', ')});`);
 		const gateway = this.client.gateways.get(table);
 		if (!gateway) throw new Error(`There is no gateway defined with the name ${table} nor an array of rows with datatypes have been given. Expected any of either.`);
@@ -75,18 +75,18 @@ export default class extends SQLProvider {
 		return this.run(`CREATE TABLE ${sanitizeKeyName(table)} (${[`id VARCHAR(${gateway.idLength || 18}) PRIMARY KEY NOT NULL UNIQUE`, ...schemaValues.map(this.qb.generateDatatype.bind(this.qb))].join(', ')})`);
 	}
 
-	deleteTable(table) {
+	public deleteTable(table) {
 		return this.run(`DROP TABLE IF EXISTS ${sanitizeKeyName(table)};`);
 	}
 
-	countRows(table) {
+	public countRows(table) {
 		return this.runOne(`SELECT COUNT(*) FROM ${sanitizeKeyName(table)};`)
 			.then(result => Number(result.count));
 	}
 
 	/* Row methods */
 
-	getAll(table: string, entries = []) {
+	public getAll(table: string, entries = []) {
 		if (entries.length) {
 			return this.runAll(`SELECT * FROM ${sanitizeKeyName(table)} WHERE id IN ('${entries.join("', '")}');`)
 				.then(results => results.map(output => this.parseEntry(table, output)));
@@ -95,13 +95,13 @@ export default class extends SQLProvider {
 			.then(results => results.map(output => this.parseEntry(table, output)));
 	}
 
-	getKeys(table: string) {
+	public getKeys(table: string) {
 		return this.runAll(`SELECT id FROM ${sanitizeKeyName(table)};`)
 			.then(rows => rows.map(row => row.id));
 	}
 
 
-	get(table: string, key: string, value?: any) {
+	public get(table: string, key: string, value?: any) {
 		// If a key is given (id), swap it and search by id - value
 		if (typeof value === 'undefined') {
 			value = key;
@@ -111,20 +111,20 @@ export default class extends SQLProvider {
 			.then(output => this.parseEntry(table, output));
 	}
 
-	has(table: string, id: string) {
+	public has(table: string, id: string) {
 		return this.runOne(`SELECT id FROM ${sanitizeKeyName(table)} WHERE id = $1 LIMIT 1;`, [id])
 			.then(result => Boolean(result));
 	}
 
-	getRandom(table: string) {
+	public getRandom(table: string) {
 		return this.runOne(`SELECT * FROM ${sanitizeKeyName(table)} ORDER BY RANDOM() LIMIT 1;`);
 	}
 
-	getSorted(table: string, key: string, order = 'DESC', limitMin: number, limitMax: number) {
+	public getSorted(table: string, key: string, order = 'DESC', limitMin: number, limitMax: number) {
 		return this.runAll(`SELECT * FROM ${sanitizeKeyName(table)} ORDER BY ${sanitizeKeyName(key)} ${order} ${parseRange(limitMin, limitMax)};`);
 	}
 
-	create(table: string, id: string, data) {
+	public create(table: string, id: string, data) {
 		const [keys, values] = this.parseUpdateInput(data, false);
 
 		// Push the id to the inserts.
@@ -137,41 +137,41 @@ export default class extends SQLProvider {
 			VALUES (${Array.from({ length: keys.length }, (__, i) => `$${i + 1}`).join(', ')});`, values);
 	}
 
-	update(table: string, id: string, data) {
+	public update(table: string, id: string, data) {
 		const [keys, values] = this.parseUpdateInput(data, false);
 		/* eslint-disable */
 		return this.run(`
 			UPDATE ${sanitizeKeyName(table)}
-			SET ${keys.map((key, i) => `${sanitizeKeyName(key)} = $${i + 1}`)} 
+			SET ${keys.map((key, i) => `${sanitizeKeyName(key)} = $${i + 1}`)}
 			WHERE id = '${id.replace(/'/, "''")}';`, values);
 	}
 	/* eslint-enable */
 
-	incrementValue(table: string, id: string, key: string, amount = 1) {
+	public incrementValue(table: string, id: string, key: string, amount = 1) {
 		return this.run(`UPDATE ${sanitizeKeyName(table)} SET $2 = $2 + $3 WHERE id = $1;`, [id, key, amount]);
 	}
 
-	decrementValue(table: string, id: string, key: string, amount = 1) {
+	public decrementValue(table: string, id: string, key: string, amount = 1) {
 		return this.run(`UPDATE ${sanitizeKeyName(table)} SET $2 = GREATEST(0, $2 - $3) WHERE id = $1;`, [id, key, amount]);
 	}
 
-	delete(table: string, id: string) {
+	public delete(table: string, id: string) {
 		return this.run(`DELETE FROM ${sanitizeKeyName(table)} WHERE id = $1;`, [id]);
 	}
 
-	addColumn(table: string, piece) {
+	public addColumn(table: string, piece) {
 		return this.run(piece.type === 'Folder'
-			? 	`ALTER TABLE ${sanitizeKeyName(table)} ADD COLUMN ${this.qb.generateDatatype(piece)};`
-			:	`ALTER TABLE ${sanitizeKeyName(table)} ${[...piece.values(true)].map(subpiece => `ADD COLUMN ${this.qb.generateDatatype(subpiece)}`).join(', ')};`);
+			? `ALTER TABLE ${sanitizeKeyName(table)} ADD COLUMN ${this.qb.generateDatatype(piece)};`
+			: `ALTER TABLE ${sanitizeKeyName(table)} ${[...piece.values(true)].map(subpiece => `ADD COLUMN ${this.qb.generateDatatype(subpiece)}`).join(', ')};`);
 	}
 
-	removeColumn(table: string, columns) {
+	public removeColumn(table: string, columns) {
 		if (typeof columns === 'string') return this.run(`ALTER TABLE ${sanitizeKeyName(table)} DROP COLUMN ${sanitizeKeyName(columns)};`);
 		if (Array.isArray(columns)) return this.run(`ALTER TABLE ${sanitizeKeyName(table)} DROP COLUMN ${columns.map(sanitizeKeyName).join(', ')};`);
 		throw new TypeError('Invalid usage of PostgreSQL#removeColumn. Expected a string or string[].');
 	}
 
-	updateColumn(table: string, piece) {
+	public updateColumn(table: string, piece) {
 		const [column, datatype] = this.qb.generateDatatype(piece).split(' ');
 		return this.run(`ALTER TABLE ${sanitizeKeyName(table)} ALTER COLUMN ${column} TYPE ${datatype}${piece.default
 			? `, ALTER COLUMN ${column} SET NOT NULL, ALTER COLUMN ${column} SET DEFAULT ${this.qb.serialize(piece.default, piece)}`
@@ -179,7 +179,7 @@ export default class extends SQLProvider {
 		};`);
 	}
 
-	getColumns(table: string, schema = 'public') {
+	public getColumns(table: string, schema = 'public') {
 		return this.runAll(`
 			SELECT column_name
 			FROM information_schema.columns
@@ -188,17 +188,17 @@ export default class extends SQLProvider {
 		`, [schema, table]).then(result => result.map(row => row.column_name));
 	}
 
-	run(...sql) {
+	public run(...sql) {
 		return this.db.query(...sql)
 			.then(result => result);
 	}
 
-	runAll(...sql) {
+	public runAll(...sql) {
 		return this.run(...sql)
 			.then(result => result.rows);
 	}
 
-	runOne(...sql) {
+	public runOne(...sql) {
 		return this.run(...sql)
 			.then(result => result.rows[0]);
 	}
