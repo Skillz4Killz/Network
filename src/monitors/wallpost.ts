@@ -30,7 +30,7 @@ export default class extends Monitor {
 			// Resend the message as an embed
 			const posted = await message.send(embed) as Message;
 			// Add the reactions to the message
-			for (const reaction of ['💟', '🔁', '➕']) await posted.react(reaction);
+			for (const reaction of ['❤', '🔁', '➕']) await posted.react(reaction);
 
 			// Delete the original message the author posted to keep channel clean
 			if (message.deletable && !message.deleted) await message.delete();
