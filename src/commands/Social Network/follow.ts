@@ -1,4 +1,5 @@
 import { Command, CommandStore, KlasaMessage, KlasaUser } from '../../imports';
+import { UserSettings } from '../../lib/types/settings/UserSettings';
 
 export default class extends Command {
 
@@ -19,15 +20,11 @@ export default class extends Command {
 			// Check if the users already follows the user specified in the command
 			const isAlreadyFollowing = following.some(followed => !(followed.id === user.id));
 
-			/* In case isAlreadyFollowing is true, remove the user from the array and update the array in the DB
-			*  In case isAlreadyFollowing is false, push the new user in the DB's array directly
+			/* Tell SG we have this user, and we need to add/remove it. In case it exists, it gets removed. Elsewise,
+			*  the user is simply pushed into the array
 			*/
-			if (isAlreadyFollowing) {
-				const newFollowing = following.filter(followed => followed.id !== user.id);
-				message.author.settings.update('following', newFollowing, { arrayAction: 'overwrite', throwOnError: true });
-			} else {
-				message.author.settings.update('following', user, { throwOnError: true });
-			}
+			await user.settings.update(UserSettings.Following, user, { throwOnError: true });
+
 			message.sendMessage(`Successfully ${isAlreadyFollowing ? 'un' : ''}followed ${user.username}`);
 
 		} catch (e) {
