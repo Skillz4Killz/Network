@@ -99,6 +99,9 @@ export default class extends Event {
 				// Follow the original author profile server
 				const following = user.settings.get(UserSettings.Following) as UserSettings.Following;
 				await user.settings.update(UserSettings.Following, guild.id, { throwOnError: true });
+
+				// Remove the reaction that the user added so they can react again
+				await message.reactions.get(emoji.id).users.remove(user.id);
 				// Send a response saying you are now following or no longer following
 				return message.channel.send(`You are ${following.includes(guild.id) ? 'no longer' : 'now'} following this user.`);
 			}
