@@ -1,3 +1,8 @@
 {
-    "extends": "bamboo"
+    "extends": "bamboo",
+    "rules": {
+        "@typescript-eslint/explicit-member-accessibility": "off",
+        "@typescript-eslint/no-use-before-define": "off",
+        "@typescript-eslint/no-namespace": "off"
+    }
 }
