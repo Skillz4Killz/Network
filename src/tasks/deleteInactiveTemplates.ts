@@ -19,7 +19,7 @@ export default class extends Task {
         // Filter out all the inactive guilds
         const newTemplates = templates.filter(template => !inactive.includes(template.id));
 
-        // Send the new array to SG
+        // Update the database to remove all guilds that no longer exist
         await this.client.settings.update(ClientSettings.GuildTemplates, newTemplates, { arrayAction: "overwrite", throwOnError: true })
     }
 
