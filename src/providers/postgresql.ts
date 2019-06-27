@@ -1,6 +1,6 @@
 // Copyright (c) 2017-2019 dirigeants. All rights reserved. MIT license.
-import { SQLProvider, Type, QueryBuilder, klasaUtil, SchemaEntry, ProviderStore, ProviderOptions } from '../imports'
-import { Pool, PoolClient } from 'pg'
+import { SQLProvider, Type, QueryBuilder, klasaUtil, SchemaEntry, ProviderStore, ProviderOptions } from '../imports';
+import { Pool, PoolClient } from 'pg';
 
 export default class extends SQLProvider {
 
@@ -14,18 +14,18 @@ export default class extends SQLProvider {
 		super(store, file, directory, options);
 
 		this.qb = new QueryBuilder({
-			array: (type) => `${type}[]`,
+			array: type => `${type}[]`,
 			arraySerializer: (values, piece, resolver) =>
-				values.length ? `array[${values.map((value) => resolver(value, piece)).join(', ')}]` : "'{}'",
+				values.length ? `array[${values.map(value => resolver(value, piece)).join(', ')}]` : "'{}'",
 			formatDatatype: (name, datatype, def = null) =>
-				`"${name}" ${datatype}${def !== null ? ` NOT NULL DEFAULT ${def}` : ''}`,
+				`"${name}" ${datatype}${def !== null ? ` NOT NULL DEFAULT ${def}` : ''}` //eslint-disable-line
 		})
 			.add('boolean', { type: 'BOOL' })
 			.add('integer', { type: ({ max }: SchemaEntry) => max! >= 2 ** 32 ? 'BIGINT' : 'INTEGER' })
 			.add('float', { type: 'DOUBLE PRECISION' })
 			.add('uuid', { type: 'UUID' })
-			.add('any', { type: 'JSON', serializer: (input) => `'${JSON.stringify(input)}'::json` })
-			.add('json', { extends: 'any' });
+			.add('any', { type: 'JSON', serializer: input => `'${JSON.stringify(input)}'::json` })
+			.add('json', { 'extends': 'any' });
 	}
 
 	async init() {
@@ -139,11 +139,13 @@ export default class extends SQLProvider {
 
 	update(table: string, id: string, data) {
 		const [keys, values] = this.parseUpdateInput(data, false);
+		/* eslint-disable */
 		return this.run(`
 			UPDATE ${sanitizeKeyName(table)}
-			SET ${keys.map((key, i) => `${sanitizeKeyName(key)} = $${i + 1}`)}
+			SET ${keys.map((key, i) => `${sanitizeKeyName(key)} = $${i + 1}`)} 
 			WHERE id = '${id.replace(/'/, "''")}';`, values);
 	}
+	/* eslint-enable */
 
 	incrementValue(table: string, id: string, key: string, amount = 1) {
 		return this.run(`UPDATE ${sanitizeKeyName(table)} SET $2 = $2 + $3 WHERE id = $1;`, [id, key, amount]);
@@ -158,9 +160,9 @@ export default class extends SQLProvider {
 	}
 
 	addColumn(table: string, piece) {
-		return this.run(piece.type !== 'Folder' ?
-			`ALTER TABLE ${sanitizeKeyName(table)} ADD COLUMN ${this.qb.generateDatatype(piece)};` :
-			`ALTER TABLE ${sanitizeKeyName(table)} ${[...piece.values(true)].map(subpiece => `ADD COLUMN ${this.qb.generateDatatype(subpiece)}`).join(', ')};`);
+		return this.run(piece.type === 'Folder'
+			? 	`ALTER TABLE ${sanitizeKeyName(table)} ADD COLUMN ${this.qb.generateDatatype(piece)};`
+			:	`ALTER TABLE ${sanitizeKeyName(table)} ${[...piece.values(true)].map(subpiece => `ADD COLUMN ${this.qb.generateDatatype(subpiece)}`).join(', ')};`);
 	}
 
 	removeColumn(table: string, columns) {
@@ -171,9 +173,10 @@ export default class extends SQLProvider {
 
 	updateColumn(table: string, piece) {
 		const [column, datatype] = this.qb.generateDatatype(piece).split(' ');
-		return this.run(`ALTER TABLE ${sanitizeKeyName(table)} ALTER COLUMN ${column} TYPE ${datatype}${piece.default ?
-			`, ALTER COLUMN ${column} SET NOT NULL, ALTER COLUMN ${column} SET DEFAULT ${this.qb.serialize(piece.default, piece)}` : ''
-			};`);
+		return this.run(`ALTER TABLE ${sanitizeKeyName(table)} ALTER COLUMN ${column} TYPE ${datatype}${piece.default
+			? `, ALTER COLUMN ${column} SET NOT NULL, ALTER COLUMN ${column} SET DEFAULT ${this.qb.serialize(piece.default, piece)}`
+			: ''
+		};`);
 	}
 
 	getColumns(table: string, schema = 'public') {
@@ -200,7 +203,7 @@ export default class extends SQLProvider {
 			.then(result => result.rows[0]);
 	}
 
-};
+}
 
 /**
  * @param {string} value The string to sanitize as a key

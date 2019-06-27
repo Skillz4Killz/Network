@@ -1,4 +1,4 @@
-import { KlasaClient } from 'klasa'
+import { KlasaClient } from 'klasa';
 
 KlasaClient.defaultClientSchema
-	.add('guildTemplates', 'guild', { array: true })
+	.add('guildTemplates', 'guild', { array: true });
