@@ -1,9 +1,9 @@
 import { KlasaClient } from './imports';
 import configs from '../configs';
 
-import './lib/schemas/client'
-import './lib/schemas/guild'
-import './lib/schemas/user'
+import './lib/schemas/client';
+import './lib/schemas/guild';
+import './lib/schemas/user';
 
 new KlasaClient({
 	commandEditing: true,
