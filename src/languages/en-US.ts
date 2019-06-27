@@ -1,7 +1,7 @@
-import { Language } from '../imports'
+import { Language } from '../imports';
 
 export default class extends Language {
 
-	language = {}
+	language = {};
 
-};
+}

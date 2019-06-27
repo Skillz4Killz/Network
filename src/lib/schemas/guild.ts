@@ -1,4 +1,4 @@
-import { KlasaClient } from 'klasa'
+import { KlasaClient } from 'klasa';
 
 KlasaClient.defaultGuildSchema
 	.add('followers', 'user', { array: true })
@@ -6,8 +6,6 @@ KlasaClient.defaultGuildSchema
 		.add('wall', 'textchannel')
 		.add('notifications', 'textchannel')
 		.add('feed', 'textchannel')
-		.add('photos', 'textchannel')
-	)
+		.add('photos', 'textchannel'))
 	.add('roles', roleFolder => roleFolder
-		.add('subscriber', 'role')
-	)
+		.add('subscriber', 'role'));

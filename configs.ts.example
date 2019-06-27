@@ -1,0 +1,10 @@
+export default {
+	botToken: '',
+	postgresql: {
+		user: '',
+		password: '',
+		host: '',
+		port: 5432,
+		database: ''
+	}
+};

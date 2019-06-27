@@ -1,23 +1,29 @@
 export {
 	Command,
 	CommandStore,
+	Event,
+	EventStore,
 	KlasaMessage,
 	KlasaGuild,
 	KlasaClient,
 	KlasaUser,
+	util as klasaUtil,
 	Language,
-	SQLProvider,
-	Type,
-	QueryBuilder,
-	SchemaEntry,
 	ProviderStore,
 	ProviderOptions,
-	util as klasaUtil,
-} from 'klasa'
+	QueryBuilder,
+	SchemaEntry,
+	SQLProvider,
+	Type,
+	Task
+} from 'klasa';
 
 export {
-	TextChannel,
-	Snowflake,
+	CategoryChannel,
+	GuildChannel,
 	Message,
 	MessageEmbed,
-} from 'discord.js'
+	Permissions,
+	Snowflake,
+	TextChannel
+} from 'discord.js';

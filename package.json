@@ -16,7 +16,6 @@
   "dependencies": {
     "bufferutil": "^4.0.1",
     "discord.js": "github:discordjs/discord.js",
-    "erlpack": "discordapp/erlpack",
     "klasa": "github:dirigeants/klasa#settings",
     "pg": "^7.11.0",
     "zlib-sync": "^0.1.4"
@@ -25,15 +24,14 @@
     "@types/node": "^12.0.10",
     "@typescript-eslint/eslint-plugin": "^1.11.0",
     "@typescript-eslint/parser": "^1.11.0",
-    "eslint": "^5.0.0",
+    "eslint": "^6.0.1",
     "eslint-config-bamboo": "^1.3.0",
-    "ts-node": "^8.3.0",
     "typescript": "^3.5.2"
   },
   "scripts": {
     "lint": "eslint src/*",
     "build": "tsc -p .",
-    "run:js": "node dist/src/index.js",
-    "run": "yarn build && yarn run:js"
+    "start": "node dist/src/index.js",
+    "develop": "yarn build && yarn start"
   }
 }
