@@ -29,7 +29,7 @@ module.exports = class extends Command {
 				.setTitle(command.name)
 				.setDescription(klasaUtil.isFunction(command.description) ? command.description(message.language) : command.description)
 				.addField('Usage', message.language.get('COMMAND_HELP_USAGE', command.usage.fullUsage(message)))
-				.addField('Extended help', klasaUtil.isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp)
+				.addField('Extended help', (klasaUtil.isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp) ? klasaUtil.isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp : 'Just run it and hope for the best')
 				.setColor('48929b')
 				.setFooter(`Requested by ${message.author.username}`);
 			return message.send(embed);
