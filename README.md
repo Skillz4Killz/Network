@@ -19,6 +19,7 @@ You can join the [Support Server](https://discord.gg/wEkD2Dh) to contact the dev
 
 This feature brings some of the common functionalities of other social networks, like Twitter and Facebook, to Discord. This bot helps make Discord be the only social network anyone would ever need.
 
+
 ![Social Network Example](https://i.imgur.com/XqujC86.png)
 
 - `.createnetwork` => creates all the channels and roles necessary for a full profile server. This server will serve as a facebook group/profile or twitter profile page.
@@ -83,3 +84,5 @@ Something missing in Discord is being able to make a new server using a template
 2. Create the configs.ts file using the example file.
 3. Create a Discord Bot at Discord Developer portal and get the token. Paste the token in the configs.ts file.
 4. Create an account on MongoDB Atlas and create a new cluster. Once you create a new connection. Add the connection url to the configs file.
+5. `yarn`
+6. `yarn develop`
