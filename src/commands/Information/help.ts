@@ -1,9 +1,6 @@
-// Copyright (c) 2017-2019 dirigeants. All rights reserved. MIT license.
-import { Command, RichDisplay, klasaUtil, MessageEmbed, Permissions, CommandStore } from '../../imports';
-const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
-const time = 1000 * 60 * 3;
+import { Command, klasaUtil, MessageEmbed, KlasaMessage, CommandStore } from '../../imports';
 
-module.exports = class extends Command {
+export default class extends Command {
 
 	protected handlers: Map<any, any>;
 	public constructor(store: CommandStore, file: string[], directory) {
@@ -11,94 +8,44 @@ module.exports = class extends Command {
 			aliases: ['commands', 'cmd', 'cmds'],
 			guarded: true,
 			description: language => language.get('COMMAND_HELP_DESCRIPTION'),
-			usage: '(Command:command)'
+			usage: '[command:command]'
 		});
-
-		this.createCustomResolver('command', (arg, possible, message) => {
-			if (!arg || arg === '') return undefined;
-			return this.client.arguments.get('command').run(arg, possible, message);
-		});
-
-		// Cache the handlers
-		this.handlers = new Map();
 	}
 
-	public async run(message, [command]: [Command]) {
+	public async run(message: KlasaMessage, [command]: [Command | undefined]) {
+		// If a single command is given like `.help invite` we can just return a simple embed response
 		if (command) {
 			const embed = new MessageEmbed()
 				.setTitle(command.name)
 				.setDescription(klasaUtil.isFunction(command.description) ? command.description(message.language) : command.description)
 				.addField('Usage', message.language.get('COMMAND_HELP_USAGE', command.usage.fullUsage(message)))
-				.addField('Extended help', (klasaUtil.isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp) ? klasaUtil.isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp : 'Just run it and hope for the best')
+				.addField('Extended help', (klasaUtil.isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp) ? klasaUtil.isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp : 'The best way to learn is just to try it out.')
 				.setColor('48929b')
 				.setFooter(`Requested by ${message.author.username}`);
+
 			return message.send(embed);
 		}
 
-		if (!('all' in message.flags) && message.guild && message.channel.permissionsFor(this.client.user).has(PERMISSIONS_RICHDISPLAY)) {
-			// Finish the previous handler
-			const previousHandler = this.handlers.get(message.author.id);
-			if (previousHandler) previousHandler.stop();
-
-			const handler = await (await this.buildDisplay(message)).run(await message.send('Loading Commands...'), {
-				filter: (_reaction, user) => user.id === message.author.id,
-				time
-			});
-			handler.on('end', () => this.handlers.delete(message.author.id));
-			this.handlers.set(message.author.id, handler);
-			return handler;
-		}
-
-		return message.author.send(await this.buildHelp(message), { split: { 'char': '\n' } })
-			.then(() => { if (message.channel.type !== 'dm') message.sendMessage(message.language.get('COMMAND_HELP_DM')); })
-			.catch(() => { if (message.channel.type !== 'dm') message.sendMessage(message.language.get('COMMAND_HELP_NODM')); });
-	}
-
-	private async buildHelp(message) {
-		const commands = await this._fetchCommands(message);
-		const { prefix } = message.guildSettings;
-
-		const helpMessage = [];
-		for (const [category, list] of commands) {
-			helpMessage.push(`**${category} Commands**:\n`, list.map(this.formatCommand.bind(this, message, prefix, false)).join('\n'), '');
-		}
-
-		return helpMessage.join('\n');
-	}
-
-	private async buildDisplay(message) {
-		const commands = await this._fetchCommands(message);
 		const prefix = message.guild.settings.get('prefix');
-		const display = new RichDisplay();
-		const color = message.member.displayColor;
-		for (const [category, list] of commands) {
-			display.addPage(new MessageEmbed()
-				.setTitle(`${category} Commands`)
-				.setColor(color)
-				.setDescription(list.map(this.formatCommand.bind(this, message, prefix, true)).join('\n')));
+		const isOwner = message.guild.ownerID === message.author.id;
+		const embed = new MessageEmbed()
+			.setColor('48929b');
+
+		const categoryCommands = {};
+		for (const command of this.client.commands.values()) {
+			// If its a bot owner command just skip
+			if (command.permissionLevel === 10) continue;
+			// create the full description whether its a function or a string. Functions are in core commands.
+			const description = klasaUtil.isFunction(command.description) ? command.description(message.language) : command.description;
+			// Check to see and create an array for this commands category if it doesnt exist
+			if (!categoryCommands[command.category]) categoryCommands[command.category] = [];
+			// Push the final description for this command
+			categoryCommands[command.category].push(`\`${prefix}${command.name}\`${!isOwner && command.permissionLevel === 7 ? ' : **Server Owners Only**' : ''} => ${description}`);
 		}
 
-		return display;
+		for (const category of Object.keys(categoryCommands)) embed.addField(category, categoryCommands[category].join('\n'));
+
+		return message.send(embed);
 	}
 
-	private formatCommand(message, prefix, richDisplay, command) {
-		const description = klasaUtil.isFunction(command.description) ? command.description(message.language) : command.description;
-		return richDisplay ? `• ${prefix}${command.name} → ${description}` : `• **${prefix}${command.name}** → ${description}`;
-	}
-
-	private async _fetchCommands(message) {
-		const run = this.client.inhibitors.run.bind(this.client.inhibitors, message);
-		const commands = new Map();
-		await Promise.all(this.client.commands.map(command => run(command, true)
-			.then(() => {
-				const category = commands.get(command.category);
-				if (category) category.push(command);
-				else commands.set(command.category, [command]);
-			}).catch(() => {
-				// noop
-			})));
-
-		return commands;
-	}
-
-};
+}
