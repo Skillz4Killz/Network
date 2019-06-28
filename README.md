@@ -26,9 +26,9 @@ This feature brings some of the common functionalities of other social networks,
   - **#wall** => where you make your posts.
     - Anyone following you will have this message sent to their #feed channel.
     - Every message sent in this channel will get ❤️, 🔄, and ➕ reactions added.
-      - When someone taps the replay 🔄 reaction, it will repost that message in their own #wall channel, like a retweet.
-      - When the heart ❤️ reaction is tapped, a message is sent to notifications saying someone has liked this message.
-      - What the ➕is tapped, you will **follow/unfollow** the original poster.
+      - 🔄: Repost that message in their own #wall channel, like a retweet.
+      - ❤️: Send a message to #notifications saying someone has liked this message.
+      - ➕: you will **follow/unfollow** the original poster.
   - **#feed** => the posts from all the people you follow.
   - **#notifications** => all alerts: someone followed you, liked your post, reposted your post, etc.
 ![Notification Example](https://i.imgur.com/nkuyvbM.png)

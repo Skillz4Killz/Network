@@ -85,7 +85,7 @@ export default class extends Command {
 			await response.edit(embed);
 
 			// Create the feed channel which no one can see
-			const feedChannel = await message.guild.channels.create('feed', { type: DiscordChannelTypes.text, parent: categoryChannel.id, permissionOverwrites: [{ id: message.guild.id, deny: ['SEND_MESSAGES'] }, { id: this.client.user.id, allow: ['SEND_MESSAGES'] }] });
+			const feedChannel = await message.guild.channels.create('feed', { type: DiscordChannelTypes.text, parent: categoryChannel.id, permissionOverwrites: [{ id: message.guild.id, deny: ['VIEW_CHANNEL'] }, { id: this.client.user.id, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'] }] });
 			// Edit the embed
 			embed.addField('Feed Channel Created', feedChannel);
 			// Edit the message alerting the user the wall channel was created

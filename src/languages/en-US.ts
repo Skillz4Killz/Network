@@ -20,7 +20,8 @@ export default class extends Language {
 			'    • Create your own custom templates. (**.savetemplate**, **.removetemplate**, **.createserver GuildID**)',
 			'',
 			'We hope Discord will love the idea enough to consider us a winner and even add the feature to Discord directly.',
-			'Discord is Love! Discord is Life!'
+			'Discord is Love! Discord is Life!',
+			'https://i.imgur.com/iYXStzo.png'
 		]
 	};
 
