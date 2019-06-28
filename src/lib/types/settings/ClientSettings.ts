@@ -1,6 +1,5 @@
 import { Snowflake } from 'discord.js';
-
-export module ClientSettings {
+export namespace ClientSettings {
 	export type GuildTemplates = Snowflake[];
 	export const GuildTemplates = 'guildTemplates';
 }
