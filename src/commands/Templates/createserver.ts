@@ -34,10 +34,8 @@ export default class extends Command {
 
 		try {
 			const response = await message.send(embed) as Message;
-			console.log(guild.roles.filter(r => r.id !== guild.id).map(r => r.name));
 			// Clone all the roles first so we can use the roles in the channel permissions later
-			await Promise.all(guild.roles.filter(role => role.id !== guild.id).map(role => message.guild.roles.create({ data: { name: role.name, color: role.color, hoist: role.hoist, permissions: role.permissions, mentionable: role.mentionable } })));
-			console.log('roles created');
+			await Promise.all(guild.roles.filter(role => (role.id !== guild.id) && !role.managed).map(role => message.guild.roles.create({ data: { name: role.name, color: role.color, hoist: role.hoist, permissions: role.permissions, mentionable: role.mentionable } })));
 			// Tell the user we made the roles
 			await response.edit(embed.addField('Roles Created', message.guild.roles.map(role => role.toString()).join(' ')));
 
@@ -51,7 +49,6 @@ export default class extends Command {
 				const category = await this.handleChannelCreation(message, channel, guild);
 
 				for (const childChannel of (channel as CategoryChannel).children.values()) {
-					console.log('inside loop', childChannel.permissionsLocked, childChannel.name, category.name);
 					// If the channel perms are synced with the category just simply create the new channel with the parent
 					if (childChannel.permissionsLocked) await message.guild.channels.create(childChannel.name, { type: DiscordChannelTypes[childChannel.type], parent: category.id });
 					// The channel has some unique permission that are not synced with the category
