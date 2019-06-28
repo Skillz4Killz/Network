@@ -92,7 +92,9 @@ export default class extends Event {
 						const notificationChannel = this.client.channels.get(notificationChannelID) as TextChannel;
 						if (!notificationChannel) return null;
 						// Send a notification to the original authors notification channel saying x user liked it
-						await notificationChannel.send(`${user.tag} has reposted your post in ${message.guild.name} guild and it has now been shared to ${originalServer.name} guild.`);
+						const [reactorGuild] = await user.settings.resolve(UserSettings.Profile.ServerID);
+
+						await notificationChannel.send(`${user.tag} has reposted your post from ${message.guild.name} guild and it has now been shared to ${reactorGuild ? reactorGuild.name : '**Server Not Found**'} guild.`);
 						// Post the original embed so the user knows which post was liked
 						await notificationChannel.send(postEmbed);
 					}
