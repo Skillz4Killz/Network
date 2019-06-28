@@ -1,9 +1,36 @@
 import { Command, CommandStore, KlasaMessage, MessageEmbed, Message } from '../../imports';
 import { DiscordChannelTypes } from '../../lib/types/enums/DiscordJS';
 
+const VIEW_CHANNEL = ['VIEW_CHANNEL'];
+const SEND_MESSAGES = ['SEND_MESSAGES'];
+const VIEW_AND_SEND = ['VIEW_CHANNEL', 'SEND_MESSAGES'];
+
+const roles = [
+	{ name: 'Principles', color: 'random' },
+	{ name: 'Teachers', color: 'random' },
+	{ name: 'Parents', color: 'random' },
+	{ name: 'Students', color: 'random' },
+	{ name: 'Guests', color: 'random' },
+	{ name: 'Pre-Kindergarden', color: 'random' },
+	{ name: 'Kindergarden', color: 'random' },
+	{ name: '1st Grade', color: 'random' },
+	{ name: '2nd Grade', color: 'random' },
+	{ name: '3rd Grade', color: 'random' },
+	{ name: '4th Grade', color: 'random' },
+	{ name: '5th Grade', color: 'random' },
+	{ name: '6th Grade', color: 'random' },
+	{ name: '7th Grade', color: 'random' },
+	{ name: '8th Grade', color: 'random' },
+	{ name: '9th Grade', color: 'random' },
+	{ name: '10th Grade', color: 'random' },
+	{ name: '11th Grade', color: 'random' },
+	{ name: '12th Grade', color: 'random' }
+];
+
+
 export default class extends Command {
 
-	constructor(store: CommandStore, file: string[], directory: string) {
+	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			runIn: ['text'],
 			aliases: ['school'],
@@ -14,7 +41,7 @@ export default class extends Command {
 		});
 	}
 
-	async run(message: KlasaMessage) {
+	public async run(message: KlasaMessage) {
 		// Create the initial embed
 		const embed = new MessageEmbed()
 			.setAuthor(message.author.tag, message.author.displayAvatarURL())
@@ -94,30 +121,3 @@ export default class extends Command {
 	}
 
 }
-
-const roles = [
-	{ name: 'Principles', color: 'random' },
-	{ name: 'Teachers', color: 'random' },
-	{ name: 'Parents', color: 'random' },
-	{ name: 'Students', color: 'random' },
-	{ name: 'Guests', color: 'random' },
-	{ name: 'Pre-Kindergarden', color: 'random' },
-	{ name: 'Kindergarden', color: 'random' },
-	{ name: '1st Grade', color: 'random' },
-	{ name: '2nd Grade', color: 'random' },
-	{ name: '3rd Grade', color: 'random' },
-	{ name: '4th Grade', color: 'random' },
-	{ name: '5th Grade', color: 'random' },
-	{ name: '6th Grade', color: 'random' },
-	{ name: '7th Grade', color: 'random' },
-	{ name: '8th Grade', color: 'random' },
-	{ name: '9th Grade', color: 'random' },
-	{ name: '10th Grade', color: 'random' },
-	{ name: '11th Grade', color: 'random' },
-	{ name: '12th Grade', color: 'random' }
-];
-
-const VIEW_CHANNEL = ['VIEW_CHANNEL'];
-const SEND_MESSAGES = ['SEND_MESSAGES'];
-const VIEW_AND_SEND = ['VIEW_CHANNEL', 'SEND_MESSAGES'];
-
