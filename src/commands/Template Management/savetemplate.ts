@@ -15,7 +15,7 @@ export default class extends Command {
 		this.customizeResponse('templateName', 'You did not provide a template name. Please try the command again and give a name you wish to save the template as.');
 	}
 
-	public async run(message: KlasaMessage, [templateName]: [string]) {
+	public async run(message: KlasaMessage, [templateName]: [any]) {
 		const templates = this.client.settings.get(ClientSettings.GuildTemplates) as ClientSettings.GuildTemplates;
 
 		const template = templates.find(temp => temp.id === message.guild.id);
