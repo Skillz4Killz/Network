@@ -1,7 +1,7 @@
 import { Command, CommandStore, KlasaMessage, TextChannel, GuildChannel, CategoryChannel, KlasaGuild, MessageEmbed } from '../../imports';
 import { DiscordChannelTypes } from '../../lib/types/enums/DiscordJS';
 import { ClientSettings } from '../../lib/types/settings/ClientSettings';
-import { Message } from 'discord.js';
+import { Message, Snowflake } from 'discord.js';
 
 export default class extends Command {
 
@@ -35,16 +35,17 @@ export default class extends Command {
 		try {
 			const response = await message.send(embed) as Message;
 			// Clone all the roles first so we can use the roles in the channel permissions later
-			await Promise.all(guild.roles.filter(role => (role.id !== guild.id) && !role.managed).map(role => message.guild.roles.create({ data: { name: role.name, color: role.color, hoist: role.hoist, permissions: role.permissions, mentionable: role.mentionable } })));
+			const newRoles = await Promise.all(guild.roles.filter(role => (role.id !== guild.id) && !role.managed).map(role => message.guild.roles.create({ data: { name: role.name, color: role.color, hoist: role.hoist, permissions: role.permissions, mentionable: role.mentionable } })));
 			// Tell the user we made the roles
-			await response.edit(embed.addField('Roles Created', message.guild.roles.map(role => role.toString()).join(' ')));
+			await response.edit(embed.addField('Roles Created', newRoles.map(role => role.toString()).join(' ')));
 
 			for (const channel of guild.channels.values()) {
-				// If this channel does not have any category
-				if (!channel.parentID) await this.handleChannelCreation(message, channel, guild);
+				console.log(channel.name, channel.id, channel.parentID, channel.type);
+				// If this channel is does not have any category
+				if (!channel.parentID && channel.type !== 'category') await this.handleChannelCreation(message, channel, guild);
 				// If this is not a category channel skip
 				if (channel.type !== 'category') continue;
-
+				console.log('reaching category');
 				// Create the category channel
 				const category = await this.handleChannelCreation(message, channel, guild);
 
@@ -52,7 +53,7 @@ export default class extends Command {
 					// If the channel perms are synced with the category just simply create the new channel with the parent
 					if (childChannel.permissionsLocked) await message.guild.channels.create(childChannel.name, { type: DiscordChannelTypes[childChannel.type], parent: category.id });
 					// The channel has some unique permission that are not synced with the category
-					else await this.handleChannelCreation(message, channel, guild);
+					else await this.handleChannelCreation(message, childChannel, guild, category.id);
 				}
 			}
 
@@ -63,7 +64,7 @@ export default class extends Command {
 		}
 	}
 
-	public async handleChannelCreation(message: KlasaMessage, channel: GuildChannel, guild: KlasaGuild) {
+	public async handleChannelCreation(message: KlasaMessage, channel: GuildChannel, guild: KlasaGuild, categoryID?: Snowflake) {
 		const permsToUse = [];
 
 		for (const permission of channel.permissionOverwrites.values()) {
@@ -93,7 +94,7 @@ export default class extends Command {
 		}
 
 		// Create the channel using the perms we created above
-		return message.guild.channels.create(channel.name, { type: DiscordChannelTypes[channel.type], nsfw: (channel as TextChannel).nsfw, permissionOverwrites: permsToUse });
+		return message.guild.channels.create(channel.name, { type: DiscordChannelTypes[channel.type], nsfw: (channel as TextChannel).nsfw, permissionOverwrites: permsToUse, parent: categoryID });
 	}
 
 }
