@@ -1,6 +1,6 @@
 import { KlasaMessage, Monitor, MonitorStore } from 'klasa';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { TextChannel, MessageEmbed, Message, User } from 'discord.js';
+`import { TextChannel, MessageEmbed, Message } from 'discord.js';
 import { UserSettings } from '../lib/types/settings/UserSettings';
 
 export default class extends Monitor {
@@ -64,8 +64,11 @@ export default class extends Monitor {
 				const [feedChannel] = await guild.settings.resolve(GuildSettings.Channels.FeedID);
 				if (!feedChannel) return null;
 
-				return feedChannel.send(embed);
+				feedChannel.send(embed);
 			}
+
+			// Return a message for the finalizers
+			return posted;
 		} catch (error) {
 			// Silently error cause monitors are way too risky to send messages
 			return this.client.emit('error', error);
