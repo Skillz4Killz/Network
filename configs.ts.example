@@ -1,8 +1,8 @@
 export default {
 	botToken: '',
-	encryptPassword: ''
+	encryptPassword: '',
 	mongodb: {
 		connectionString: ''
-	}
-	owners: [''],
+	},
+	owners: ['']
 };
