@@ -22,7 +22,8 @@ export default class extends Language {
 			'We hope Discord will love the idea enough to consider us a winner and even add the feature to Discord directly.',
 			'Discord is Love! Discord is Life!',
 			'https://i.imgur.com/iYXStzo.png'
-		]
+		],
+		COMMAND_INVITE: () => `To add ${this.client.user.username} to your discord guild: <${this.client.invite}>`
 	};
 
 }
