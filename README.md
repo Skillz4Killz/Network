@@ -1,5 +1,7 @@
 ![Bot Logo](https://cdn.discordapp.com/attachments/591623931664793612/594268158353866756/network-bot.png)
 
+<img src="https://cdn.discordapp.com/attachments/591623931664793612/594268158353866756/network-bot.png" width="200px" height="200px">
+
 # Network Bot
 
 ![Time to ditch Titter and Facebook](https://i.imgur.com/iYXStzo.png)
