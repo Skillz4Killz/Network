@@ -40,12 +40,11 @@ export default class extends Command {
 			await response.edit(embed.addField('Roles Created', newRoles.map(role => role.toString()).join(' ')));
 
 			for (const channel of guild.channels.values()) {
-				console.log(channel.name, channel.id, channel.parentID, channel.type);
 				// If this channel is does not have any category
 				if (!channel.parentID && channel.type !== 'category') await this.handleChannelCreation(message, channel, guild);
 				// If this is not a category channel skip
 				if (channel.type !== 'category') continue;
-				console.log('reaching category');
+
 				// Create the category channel
 				const category = await this.handleChannelCreation(message, channel, guild);
 
