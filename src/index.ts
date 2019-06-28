@@ -10,8 +10,8 @@ new KlasaClient({
 	owners: configs.owners,
 	prefix: '.',
 	providers: {
-		'default': 'postgresql',
-		'postgresql': configs.postgresql
+		'default': 'mongodb',
+		'mongodb': configs.mongodb
 	},
 	readyMessage: client => `Successfully initialized. Ready to serve ${client.guilds.size} guilds.`,
 	typing: true
