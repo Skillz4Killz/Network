@@ -5,7 +5,7 @@ This is a Discord bot built for the Discord Hack Week June 2019.
 The bot adds some key functionalities to discord:
 
 - True social networking
-- Server templates (coming soon)
+- Server templates
 - Meeting similar people (coming soon)
 
 ## [➡️ Invite the Bot to Your Server 💌](https://discordapp.com/api/oauth2/authorize?client_id=591635332198301696&permissions=268512336&scope=bot)
@@ -16,7 +16,7 @@ The bot adds some key functionalities to discord:
 
 This feature brings some of the common functionalities of other social networks, like Twitter and Facebook, to Discord. This bot helps make Discord be the only social network anyone would ever need.
 
-- `.setupnetwork` => creates all the channels and roles necessary for a full profile server. This server will serve as a facebook group/profile or twitter profile page.
+- `.createnetwork` => creates all the channels and roles necessary for a full profile server. This server will serve as a facebook group/profile or twitter profile page.
   - **#wall** => where you make your posts.
     - Every message sent in this channel will get ❤️ and 🔄 reactions added.
       - When someone taps the replay 🔄 reaction, it will repost that message in their own #wall channel, like a retweet.
@@ -32,11 +32,11 @@ This feature brings some of the common functionalities of other social networks,
 - (coming soon) `.createprofile` => begins a prompt style QA to create your profile.
 - (coming soon) `.match` => matches you with other people on Discord; you can scroll left or right to find the perfect match and get in contact.
 
-### Server Templates (feature coming soon)
+### Server Templates
 
 Something missing in Discord is being able to make a new server using a template.
 
-- `.template create school` => creates an entire server based on a school server templates.
+- `.createschool` => creates an entire server based on a school server templates.
   - @principles
   - @teachers
   - @parents
@@ -52,7 +52,7 @@ Something missing in Discord is being able to make a new server using a template
     - #important-info
     - #questions
     - #meeting voice channels
-- `.template add` => adds the current server as a template that you can reuse in other places.
+- `.savetemplate` => adds the current server as a template that you can reuse in other places.
 
 ## Developers
 
