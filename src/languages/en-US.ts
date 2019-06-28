@@ -19,9 +19,6 @@ export default class extends Language {
 			'    • Use one of the predefined templates. (**.createschool**)',
 			'    • Create your own custom templates. (**.savetemplate**, **.removetemplate**, **.createserver GuildID**)',
 			'',
-			'✅ Meet similar new people',
-			'• 🌐 Create a fresh copy of a server based on a template server.',
-			'',
 			'We hope Discord will love the idea enough to consider us a winner and even add the feature to Discord directly.',
 			'Discord is Love! Discord is Life!'
 		]
