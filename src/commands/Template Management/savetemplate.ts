@@ -8,23 +8,20 @@ export default class extends Command {
 			runIn: ['text'],
 			aliases: ['savetemp'],
 			permissionLevel: 7,
-			description: 'Saves this server as a template, so you can create another server with the same format.',
-			usage: '<templateName:string>'
+			description: 'Saves this server as a template, so you can create another server with the same format.'
 		});
-
-		this.customizeResponse('templateName', 'You did not provide a template name. Please try the command again and give a name you wish to save the template as.');
 	}
 
-	public async run(message: KlasaMessage, [templateName]: [any]) {
+	public async run(message: KlasaMessage) {
 		const templates = this.client.settings.get(ClientSettings.GuildTemplates) as ClientSettings.GuildTemplates;
 
-		const template = templates.find(temp => temp.id === message.guild.id);
+		const template = templates.includes(message.guild.id);
 
-		if (template) return message.send(`This template already exists under the name of ${template.name}`);
+		if (template) return message.send(`This server has already been added as a template.`);
 
-		await this.client.settings.update(ClientSettings.GuildTemplates, { name: templateName, id: message.guild.id });
+		await this.client.settings.update(ClientSettings.GuildTemplates, message.guild.id, { throwOnError: true });
 
-		return message.send(`The template has been saved with the name **${templateName}**. You can now add the bot to new server and type **.createserver ${templateName}** to create a copy of the server.`);
+		return message.send(`The template has been saved. You can now add the bot to a new server and type **.createserver ${message.guild.id}** to create a copy of the server.`);
 	}
 
 }
