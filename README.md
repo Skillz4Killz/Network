@@ -1,4 +1,4 @@
-[Bot Logo]()
+[Bot Logo](https://cdn.discordapp.com/attachments/591623931664793612/594268158353866756/network-bot.png)
 
 # Network Bot
 
