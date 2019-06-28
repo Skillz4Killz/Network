@@ -1,6 +1,7 @@
 export {
 	Command,
 	CommandStore,
+	Duration,
 	Event,
 	EventStore,
 	KlasaMessage,
@@ -16,7 +17,8 @@ export {
 	SchemaEntry,
 	SQLProvider,
 	Type,
-	Task
+	Task,
+	version as klasaVersion
 } from 'klasa';
 
 export {
@@ -26,5 +28,6 @@ export {
 	MessageEmbed,
 	Permissions,
 	Snowflake,
-	TextChannel
+	TextChannel,
+	version as discordJSVersion
 } from 'discord.js';

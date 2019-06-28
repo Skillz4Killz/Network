@@ -1,32 +1,31 @@
 import { Command, CommandStore, KlasaMessage, MessageEmbed, Message } from '../../imports';
 import { DiscordChannelTypes } from '../../lib/types/enums/DiscordJS';
 
+const roles = [
+	{ name: 'Principles', color: '#800000' },
+	{ name: 'Teachers', color: '#e6194B' },
+	{ name: 'Parents', color: '#fabebe' },
+	{ name: 'Students', color: '#9A6324' },
+	{ name: 'Guests', color: '#f58231' },
+	{ name: 'Pre-Kindergarden', color: '#ffd8b1' },
+	{ name: 'Kindergarden', color: '#808000' },
+	{ name: '1st Grade', color: '#ffe119' },
+	{ name: '2nd Grade', color: '#fffac8' },
+	{ name: '3rd Grade', color: '#bfef45' },
+	{ name: '4th Grade', color: '#3cb44b' },
+	{ name: '5th Grade', color: '#aaffc3' },
+	{ name: '6th Grade', color: '#469990' },
+	{ name: '7th Grade', color: '#42d4f4' },
+	{ name: '8th Grade', color: '#000075' },
+	{ name: '9th Grade', color: '#4363d8' },
+	{ name: '10th Grade', color: '#911eb4' },
+	{ name: '11th Grade', color: '#e6beff' },
+	{ name: '12th Grade', color: '#f032e6' }
+];
+
 const VIEW_CHANNEL = ['VIEW_CHANNEL'];
 const SEND_MESSAGES = ['SEND_MESSAGES'];
 const VIEW_AND_SEND = ['VIEW_CHANNEL', 'SEND_MESSAGES'];
-
-const roles = [
-	{ name: 'Principles', color: 'random' },
-	{ name: 'Teachers', color: 'random' },
-	{ name: 'Parents', color: 'random' },
-	{ name: 'Students', color: 'random' },
-	{ name: 'Guests', color: 'random' },
-	{ name: 'Pre-Kindergarden', color: 'random' },
-	{ name: 'Kindergarden', color: 'random' },
-	{ name: '1st Grade', color: 'random' },
-	{ name: '2nd Grade', color: 'random' },
-	{ name: '3rd Grade', color: 'random' },
-	{ name: '4th Grade', color: 'random' },
-	{ name: '5th Grade', color: 'random' },
-	{ name: '6th Grade', color: 'random' },
-	{ name: '7th Grade', color: 'random' },
-	{ name: '8th Grade', color: 'random' },
-	{ name: '9th Grade', color: 'random' },
-	{ name: '10th Grade', color: 'random' },
-	{ name: '11th Grade', color: 'random' },
-	{ name: '12th Grade', color: 'random' }
-];
-
 
 export default class extends Command {
 
@@ -46,7 +45,6 @@ export default class extends Command {
 		const embed = new MessageEmbed()
 			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setFooter('This message will update you on the progress. Please bear with me as I set up the entire server.');
-
 
 		try {
 			// Tell the user to wait while we make everything
