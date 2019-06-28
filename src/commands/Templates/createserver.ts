@@ -1,7 +1,6 @@
-import { Command, CommandStore, KlasaMessage, TextChannel, GuildChannel, CategoryChannel, KlasaGuild, MessageEmbed } from '../../imports';
+import { Command, CommandStore, KlasaMessage, TextChannel, GuildChannel, CategoryChannel, KlasaGuild, MessageEmbed, Message, Snowflake } from '../../imports';
 import { DiscordChannelTypes } from '../../lib/types/enums/DiscordJS';
 import { ClientSettings } from '../../lib/types/settings/ClientSettings';
-import { Message, Snowflake } from 'discord.js';
 
 export default class extends Command {
 
