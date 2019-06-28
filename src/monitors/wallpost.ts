@@ -1,6 +1,6 @@
 import { KlasaMessage, Monitor, MonitorStore } from 'klasa';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
-`import { TextChannel, MessageEmbed, Message } from 'discord.js';
+import { TextChannel, MessageEmbed, Message } from 'discord.js';
 import { UserSettings } from '../lib/types/settings/UserSettings';
 
 export default class extends Monitor {

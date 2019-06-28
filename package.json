@@ -17,7 +17,7 @@
     "bufferutil": "^4.0.1",
     "discord.js": "github:discordjs/discord.js",
     "klasa": "github:dirigeants/klasa#settings",
-    "rethinkdb-ts": "^2.4.0-rc.15",
+    "mongodb": "^3.2.7",
     "zlib-sync": "^0.1.4"
   },
   "devDependencies": {
