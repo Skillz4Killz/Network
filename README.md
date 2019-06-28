@@ -1,40 +1,40 @@
 # Network Bot
 
-This is a discord bot built for the Discord Hack Week June 2019.
+This is a Discord bot built for the Discord Hack Week June 2019.
 
 The bot adds some key functionalities to discord:
 
-- True social network
-- Server template networks
-- Meet similar new people
+- True social networking
+- Server templates (coming soon)
+- Meeting similar people (coming soon)
 
 ## Features
 
 ### Social Network Feature
 
-This feature brings some of the common functionalities of other social networks like twitter and Facebook to Discord. This bot helps make Discord be the only social network anyone would ever need.
+This feature brings some of the common functionalities of other social networks, like Twitter and Facebook, to Discord. This bot helps make Discord be the only social network anyone would ever need.
 
-- `.setupnetwork`=> creates all the channels and roles necessary for a full profile server. This server will serve as a facebook group/profile or twitter profile page.
-  - #wall => channel that you make your posts in. 
-    - Every message sent in this channel will get ❤️ and 🔄 reactions added. 
-      - When someone taps the replay reaction it will post that message in their own wall channel like a retweet.
-      - When the heart reaction is tapped a message is sent to notifications saying someone has liked this message. 
+- `.setupnetwork` => creates all the channels and roles necessary for a full profile server. This server will serve as a facebook group/profile or twitter profile page.
+  - **#wall** => where you make your posts.
+    - Every message sent in this channel will get ❤️ and 🔄 reactions added.
+      - When someone taps the replay 🔄 reaction, it will repost that message in their own #wall channel, like a retweet.
+      - When the heart ❤️ reaction is tapped, a message is sent to notifications saying someone has liked this message.
       - If the messages contains an image, that image will be sent in #photos to save all media.
-      - Editing a message will edit all messages from all servers. 
-    - Anyone following you will have this message sent to their #feed channel
-    - Only bot can add new reactions on this channel. 
-  - #feed channel will be where all messages are shown from all the people you follow.
-  - #notifications => all alerts like new follower, someone liked, reposted etc
-  - #photos will show all your photos.
-  - @subscribers role that will be pinged whenever you make a post on the wall
-- `.createprofile` begins a prompt style QA to create your profile.
-- `.match` mathes you with other people on discord which you can scroll left or right to find the perfect match and get in contact.
+      - Editing a message will edit that message in all servers.
+    - Anyone following you will have this message sent to their #feed channel.
+    - Only the bot can add new reactions on this channel.
+  - **#feed** => the posts from all the people you follow.
+  - **#notifications** => all alerts: someone followed you, liked your post, reposted your post, etc.
+  - **#photos** => all your photos.
+  - **@subscribers** => will be pinged whenever you make a post on the wall.
+- (coming soon) `.createprofile` => begins a prompt style QA to create your profile.
+- (coming soon) `.match` => matches you with other people on Discord; you can scroll left or right to find the perfect match and get in contact.
 
-### Server Templates
+### Server Templates (feature coming soon)
 
-Something missing in discord is being able to make a new server using a template. 
+Something missing in Discord is being able to make a new server using a template.
 
-- `.template create school` => creates an entire server based on a school server templates. 
+- `.template create school` => creates an entire server based on a school server templates.
   - @principles
   - @teachers
   - @parents
@@ -50,20 +50,20 @@ Something missing in discord is being able to make a new server using a template
     - #important-info
     - #questions
     - #meeting voice channels
-- `.template add` adds the current server as a template that you can reuse in other places.
-  
+- `.template add` => adds the current server as a template that you can reuse in other places.
+
 ## Developers
 
 - [Skillz4Killz](https://discord.gg/rWMuMdk)
 - [Charalampos Fanoulis](https://github.com/cfanoulis)
 - [VoidTecc](https://github.com/VoidCodes)
-- [tech_hutch](https://github.com/tech6hutch)
+- [Hutch Moore](https://github.com/tech6hutch)
 
-## How We Built It?
+## How We Built It
 
 ### Technology Used
 
-1. [NodeJS](https://nodejs.org) + [Typescript](https://github.com/Microsoft/TypeScript)- The languages used to code the bot.
+1. [TypeScript](https://github.com/Microsoft/TypeScript) + [NodeJS](https://nodejs.org) - The language and runtime used by the bot.
 2. [Discord.JS](https://discord.js.org) - The Discord API wrapper used.
-3. [Klasa](https://klasa.js.org) - The best Discord.JS Framework that helps make bot development easier.
-4. [PostgreSQL](https://www.postgresql.org/) - Database used to store information needed to make the bot work like settings.
+3. [Klasa](https://klasa.js.org) - The most complete Discord.JS framework that helps make bot development easier.
+4. [MongoDB](https://www.mongodb.com) - Database used to store information needed to make the bot work, like settings.
