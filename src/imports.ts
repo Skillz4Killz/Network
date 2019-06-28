@@ -13,6 +13,7 @@ export {
 	ProviderStore,
 	ProviderOptions,
 	QueryBuilder,
+	RichDisplay,
 	SchemaEntry,
 	SQLProvider,
 	Type,
