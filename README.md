@@ -8,6 +8,8 @@ The bot adds some key functionalities to discord:
 - Server templates (coming soon)
 - Meeting similar people (coming soon)
 
+## [➡️ Invite the Bot to Your Server 💌](https://discordapp.com/api/oauth2/authorize?client_id=591635332198301696&permissions=268512336&scope=bot)
+
 ## Features
 
 ### Social Network Feature
