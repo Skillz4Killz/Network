@@ -31,7 +31,7 @@ module.exports = class extends Command {
 				.addField('Usage', message.language.get('COMMAND_HELP_USAGE', command.usage.fullUsage(message)))
 				.addField('Extended help', klasaUtil.isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp)
 				.setColor('48929b')
-				.setFooter(`Requested by ${message.author.name}`);
+				.setFooter(`Requested by ${message.author.username}`);
 			return message.send(embed);
 		}
 
