@@ -7,6 +7,7 @@ import './lib/schemas/user';
 
 new KlasaClient({
 	commandEditing: true,
+	commandLogging: true,
 	owners: configs.owners,
 	prefix: '.',
 	providers: {
