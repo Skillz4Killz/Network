@@ -7,11 +7,13 @@ import './lib/schemas/user';
 
 new KlasaClient({
 	commandEditing: true,
+	commandLogging: true,
+	owners: configs.owners,
 	prefix: '.',
-	typing: true,
-	readyMessage: client => `Successfully initialized. Ready to serve ${client.guilds.size} guilds.`,
 	providers: {
-		'default': 'postgresql',
-		'postgresql': configs.postgresql
-	}
+		'default': 'mongodb',
+		'mongodb': configs.mongodb
+	},
+	readyMessage: client => `Successfully initialized. Ready to serve ${client.guilds.size} guilds.`,
+	typing: true
 }).login(configs.botToken);
