@@ -3,6 +3,7 @@ import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { TextChannel, MessageEmbed, Message } from 'discord.js';
 import { UserSettings } from '../lib/types/settings/UserSettings';
 
+const postReactions = ['❤', '🔁', '➕'];
 export default class extends Monitor {
 
 	public constructor(store: MonitorStore, file: string[], directory: string) {
@@ -19,7 +20,7 @@ export default class extends Monitor {
 		if (message.guild.ownerID !== message.author.id) return null;
 
 		// If the guild doesnt have a wall channel or if this is NOT the wall channel cancel it
-		const [wallChannelID, photosChannelID] = message.guild.settings.pluck(GuildSettings.Channels.WallID, GuildSettings.Channels.PhotosID);
+		const wallChannelID = message.guild.settings.get(GuildSettings.Channels.WallID) as GuildSettings.Channels.TextChannelID;
 		if (!wallChannelID || (wallChannelID !== message.channel.id)) return null;
 
 		const imageURL = message.attachments.size ? message.attachments.first().url : null;
@@ -36,19 +37,18 @@ export default class extends Monitor {
 			// Resend the message as an embed
 			const posted = await message.send(embed) as Message;
 			// Add the reactions to the message
-			for (const reaction of ['❤', '🔁', '➕']) await posted.react(reaction);
+			for (const reaction of postReactions) await posted.react(reaction);
 
 			// Delete the original message the author posted to keep channel clean
 			if (message.deletable && !message.deleted) await message.delete();
 
-			// If there was no image then simple cancel out
-			if (!imageURL || !photosChannelID) return posted;
-
 			// If an image was attached post the image in #photos
-			const photosChannel = message.guild.channels.get(photosChannelID) as TextChannel;
-			if (!photosChannel) return posted;
+			if (imageURL) {
+				const [photosChannel] = await message.guild.settings.resolve(GuildSettings.Channels.PhotosID);
+				if (!photosChannel) return posted;
 
-			await photosChannel.send(embed);
+				await photosChannel.send(embed);
+			}
 
 			// Now we have to repost this in every followers feed
 			for (const user of this.client.users.values()) {
@@ -58,13 +58,17 @@ export default class extends Monitor {
 
 				// This user is following so get the profile server for this user
 				const guild = this.client.guilds.get(serverID);
-				if (!guild) return null;
+				if (!guild) continue;
 
 				// Get the channel from the settings
 				const [feedChannel] = await guild.settings.resolve(GuildSettings.Channels.FeedID);
-				if (!feedChannel) return null;
+				if (!feedChannel) continue;
 
-				feedChannel.send(embed);
+				// Make sure to catch these so we dont stop the whole loop on one error from 1 user
+				const feedPost = await feedChannel.send(embed).catch(() => null);
+				if (!feedPost) continue;
+
+				for (const reaction of postReactions) await feedPost.react(reaction).catch(() => null);
 			}
 
 			// Return a message for the finalizers
@@ -76,3 +80,4 @@ export default class extends Monitor {
 	}
 
 }
+
