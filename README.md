@@ -1,4 +1,4 @@
-<img src="https://cdn.discordapp.com/attachments/591623931664793612/594268158353866756/network-bot.png" width="200px" height="200px">
+<img src="https://cdn.discordapp.com/attachments/591623931664793612/594268158353866756/network-bot.png" width="200px" height="200px" style="margin:auto;">
 
 # Network Bot
 
