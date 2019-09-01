@@ -21,7 +21,7 @@ export default class extends Provider {
 
 		const mongoClient = await MongoClient.connect(
 			connectionString,
-			util.mergeObjects(connection.options, { useNewUrlParser: true })
+			util.mergeObjects(connection.options, { useNewUrlParser: true, useUnifiedTopology: true })
 		);
 
 		this.db = mongoClient.db(connection.db);
