@@ -18,4 +18,4 @@ export default class extends Event {
 		if (!this.client.options.consoleEvents.wtf) this.disable();
 	}
 
-};
+}
