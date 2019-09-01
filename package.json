@@ -32,6 +32,7 @@
     "lint": "eslint src/*",
     "build": "tsc -p .",
     "start": "node dist/src/index.js",
-    "develop": "yarn build && yarn start"
+    "develop": "yarn build && yarn start",
+    "clean": "rm -r -f node_modules || true && rm -r -f dist || true && rm yarn.lock -f -r || true && yarn cache clean && yarn && yarn develop"
   }
 }
