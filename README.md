@@ -6,7 +6,7 @@
 
 ![Time to ditch Titter and Facebook](https://i.imgur.com/iYXStzo.png)
 
-This is a Discord bot built for the Discord Hack Week June 2019. It adds some key functionalities to discord:
+This discord bot adds some key functionalities to discord:
 
 - True social networking
 - Server templates
