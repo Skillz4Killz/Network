@@ -1,7 +1,5 @@
 # Contributing
 
-**IMPORTANT:** No contributions will be accepted during the Discord Hack Week!
-
 ---
 
 Thank you for wanting to contribute to this project. First and foremost please discuss the change you wish to make via an issue. This will help make sure no one is doing something that someone else is not already working on.
