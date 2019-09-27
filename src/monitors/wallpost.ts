@@ -13,8 +13,8 @@ export default class extends Monitor {
 	}
 
 	public async run(message: KlasaMessage) {
-		// If the user doesnt have permissions to add reactions
-		if (!(message.channel as TextChannel).permissionsFor(message.guild.me).has('ADD_REACTIONS')) return null;
+		// If the message is not in a guild cancel out or the user doesnt have permissions to add reactions
+		if (!message.guild || !(message.channel as TextChannel).permissionsFor(message.guild.me).has('ADD_REACTIONS')) return null;
 
 		// Only owners can post
 		if (message.guild.ownerID !== message.author.id) return null;
