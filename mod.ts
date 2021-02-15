@@ -1,4 +1,3 @@
-// import { loadLanguages } from "./src/utils/i18next.ts";
 import { configs } from "./configs.ts";
 import { botCache, Intents, startBot } from "./deps.ts";
 import { fileLoader, importDirectory } from "./src/utils/helpers.ts";
