@@ -32,9 +32,9 @@ if (!botCache.arguments.size) throw "No args loaded";
 console.info("Loading Languages...");
 // Loads languages
 await loadLanguages();
-// console.info("Loading Database");
+console.info("Loading Database");
 
-// await import("./src/database/database.ts");
+await import("./src/database/database.ts");
 console.log("Loaded Database, starting bot...");
 
 startBot({
