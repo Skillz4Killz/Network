@@ -21,6 +21,8 @@ export const configs = {
   },
   // This is the server id for your bot's main server where users can get help/support
   supportServerID: "",
+  // This is the invite link for your bot's main server where users can get help/support
+  botSupportInvite: "",
   // These are channel ids that will enable some functionality
   channelIDs: {
     // When a translation is missing this is the channel you will be alerted in.
