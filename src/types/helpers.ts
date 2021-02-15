@@ -1,4 +1,10 @@
-import { Message } from "../../deps.ts";
+import { Message, MessageReactionUncachedPayload, ReactionPayload } from "../../deps.ts";
+import {
+  CollectMessagesOptions,
+  CollectReactionsOptions,
+  MessageCollectorOptions,
+  ReactionCollectorOptions,
+} from "./collectors.ts";
 
 export interface Helpers {
   // Collectors
