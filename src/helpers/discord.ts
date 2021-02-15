@@ -1,3 +1,4 @@
+import { configs } from "../../configs.ts";
 import { botCache } from "../../deps.ts";
 import { translate } from "../utils/i18next.ts";
 
@@ -23,7 +24,7 @@ botCache.helpers.reactError = async function (message, vip = false) {
         await message
           .reply(
             translate(message.guildID, "strings:NEED_HELP_ERROR", {
-              invite: botCache.constants.botSupportInvite,
+              invite: configs.botSupportInvite,
               details: details.join("\n"),
             })
           )
@@ -34,5 +35,5 @@ botCache.helpers.reactError = async function (message, vip = false) {
 };
 
 botCache.helpers.reactSuccess = function (message) {
-  return message.addReaction(botCache.constants.emojis.success).catch(console.log);
+  return message.addReaction(botCache.constants.emojis.success).catch(console.log) as Promise<void>;
 };
