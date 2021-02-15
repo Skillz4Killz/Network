@@ -1,9 +1,0 @@
-export default {
-	botToken: '',
-	encryptPassword: '',
-	mongodb: {
-		connectionString: ''
-	},
-	owners: [''],
-	errorLogChannelID: ''
-};
