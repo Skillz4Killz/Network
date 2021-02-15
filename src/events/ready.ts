@@ -1,5 +1,6 @@
 import { bgBlue, bgYellow, black, botCache, cache } from "../../deps.ts";
 import { getTime } from "../utils/helpers.ts";
+import { sweepInactiveGuildsCache } from "./dispatchRequirements.ts";
 
 botCache.eventHandlers.ready = async function () {
   console.info(`Loaded ${botCache.arguments.size} Argument(s)`);
@@ -11,9 +12,9 @@ botCache.eventHandlers.ready = async function () {
 
   // Special Task
   // After interval of the bot starting up, remove inactive guilds
-  // setInterval(() => {
-  //   sweepInactiveGuildsCache();
-  // }, botCache.constants.milliseconds.HOUR);
+  setInterval(() => {
+    sweepInactiveGuildsCache();
+  }, botCache.constants.milliseconds.HOUR);
 
   botCache.tasks.forEach(async (task) => {
     // THESE TASKS MUST RUN WHEN STARTING BOT
