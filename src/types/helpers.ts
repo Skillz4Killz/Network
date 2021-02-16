@@ -1,5 +1,6 @@
 import { Collection, Member, Message, MessageReactionUncachedPayload, ReactionPayload } from "../../deps.ts";
 import { GuildSchema } from "../database/schemas.ts";
+import { Embed } from "../utils/Embed.ts";
 import {
   CollectMessagesOptions,
   CollectReactionsOptions,
@@ -8,6 +9,15 @@ import {
 } from "./collectors.ts";
 
 export interface Helpers {
+  // Basic Utils
+  chooseRandom: <T>(array: T[]) => T;
+  snowflakeToTimestamp: (id: string) => number;
+  toTitleCase: (text: string) => string;
+  chunkStrings: (array: string[], chunkSize?: number, separateLines?: boolean) => string[];
+  authorEmbed: (message: Message) => Embed;
+  cleanNumber: (number: bigint | number | string) => string;
+  shortNumber: (number: bigint | number | string) => string;
+
   // Collectors
   needMessage: (memberID: string, channelID: string, options?: MessageCollectorOptions | undefined) => Promise<Message>;
   collectMessages: (options: CollectMessagesOptions) => Promise<Message[]>;
