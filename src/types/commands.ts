@@ -131,7 +131,7 @@ type GuildOptionalArgumentDefinition<N extends string = string> = BaseDefinition
 };
 
 // Add each of known ArgumentDefinitions to this union.
-type ArgumentDefinition =
+export type ArgumentDefinition =
   | BooleanArgumentDefinition
   | StringArgumentDefinition
   | StringOptionalArgumentDefinition
