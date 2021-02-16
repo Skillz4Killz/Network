@@ -39,6 +39,99 @@ export async function fileLoader() {
   paths = [];
 }
 
+/** This function should be used when you want to convert milliseconds to a human readable format like 1d5h. */
+export function humanizeMilliseconds(milliseconds: number) {
+  const years = Math.floor(milliseconds / botCache.constants.milliseconds.YEAR);
+  const months = Math.floor(
+    (milliseconds % botCache.constants.milliseconds.YEAR) / botCache.constants.milliseconds.MONTH
+  );
+  const weeks = Math.floor(
+    ((milliseconds % botCache.constants.milliseconds.YEAR) % botCache.constants.milliseconds.MONTH) /
+      botCache.constants.milliseconds.WEEK
+  );
+  const days = Math.floor(
+    (((milliseconds % botCache.constants.milliseconds.YEAR) % botCache.constants.milliseconds.MONTH) %
+      botCache.constants.milliseconds.WEEK) /
+      botCache.constants.milliseconds.DAY
+  );
+  const hours = Math.floor(
+    ((((milliseconds % botCache.constants.milliseconds.YEAR) % botCache.constants.milliseconds.MONTH) %
+      botCache.constants.milliseconds.WEEK) %
+      botCache.constants.milliseconds.DAY) /
+      botCache.constants.milliseconds.HOUR
+  );
+  const minutes = Math.floor(
+    (((((milliseconds % botCache.constants.milliseconds.YEAR) % botCache.constants.milliseconds.MONTH) %
+      botCache.constants.milliseconds.WEEK) %
+      botCache.constants.milliseconds.DAY) %
+      botCache.constants.milliseconds.HOUR) /
+      botCache.constants.milliseconds.MINUTE
+  );
+  const seconds = Math.floor(
+    ((((((milliseconds % botCache.constants.milliseconds.YEAR) % botCache.constants.milliseconds.MONTH) %
+      botCache.constants.milliseconds.WEEK) %
+      botCache.constants.milliseconds.DAY) %
+      botCache.constants.milliseconds.HOUR) %
+      botCache.constants.milliseconds.MINUTE) /
+      1000
+  );
+
+  const yearString = years ? `${years}y ` : "";
+  const monthString = months ? `${months}mo ` : "";
+  const weekString = weeks ? `${weeks}w ` : "";
+  const dayString = days ? `${days}d ` : "";
+  const hourString = hours ? `${hours}h ` : "";
+  const minuteString = minutes ? `${minutes}m ` : "";
+  const secondString = seconds ? `${seconds}s ` : "";
+
+  return (
+    `${yearString}${monthString}${weekString}${dayString}${hourString}${minuteString}${secondString}`.trimEnd() || "1s"
+  );
+}
+
+/** This function helps convert a string like 1d5h to milliseconds. */
+export function stringToMilliseconds(text: string) {
+  const matches = text.match(/(\d+[w|d|h|m]{1})/g);
+  if (!matches) return;
+
+  let total = 0;
+
+  for (const match of matches) {
+    // Finds the first of these letters
+    const validMatch = /(w|d|h|m|s)/.exec(match);
+    // if none of them were found cancel
+    if (!validMatch) return;
+    // Get the number which should be before the index of that match
+    const number = match.substring(0, validMatch.index);
+    // Get the letter that was found
+    const [letter] = validMatch;
+    if (!number || !letter) return;
+
+    let multiplier = botCache.constants.milliseconds.SECOND;
+    switch (letter.toLowerCase()) {
+      case `w`:
+        multiplier = botCache.constants.milliseconds.WEEK;
+        break;
+      case `d`:
+        multiplier = botCache.constants.milliseconds.DAY;
+        break;
+      case `h`:
+        multiplier = botCache.constants.milliseconds.HOUR;
+        break;
+      case `m`:
+        multiplier = botCache.constants.milliseconds.MINUTE;
+        break;
+    }
+
+    const amount = number ? parseInt(number, 10) : undefined;
+    if (!amount) return;
+
+    total += amount * multiplier;
+  }
+
+  return total;
+}
+
 export function getTime() {
   const now = new Date();
   const hours = now.getHours();
