@@ -1,4 +1,5 @@
-import { Message, MessageReactionUncachedPayload, ReactionPayload } from "../../deps.ts";
+import { Collection, Member, Message, MessageReactionUncachedPayload, ReactionPayload } from "../../deps.ts";
+import { GuildSchema } from "../database/schemas.ts";
 import {
   CollectMessagesOptions,
   CollectReactionsOptions,
@@ -19,6 +20,15 @@ export interface Helpers {
   ) => void;
 
   // Discord Helpers
-  reactError: (message: Message) => Promise<void>;
+  isModOrAdmin: (message: Message, settings?: GuildSchema) => boolean;
+  isAdmin: (message: Message, settings?: GuildSchema | null) => boolean;
+  reactError: (message: Message, vip?: boolean) => Promise<void>;
   reactSuccess: (message: Message) => Promise<void>;
+  emojiReaction: (emoji: string) => string;
+  emojiID: (emoji: string) => string | undefined;
+  emojiUnicode: (emoji: ReactionPayload) => string;
+  moveMessageToOtherChannel: (message: Message, channelID: string) => Promise<Message | undefined>;
+  fetchMember: (guildID: string, userID: string) => Promise<Member | undefined>;
+  fetchMembers: (guildID: string, userIDs: string[]) => Promise<Collection<string, Member> | undefined>;
+  memberTag: (message: Message) => string;
 }
