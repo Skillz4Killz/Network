@@ -2,14 +2,12 @@ import {
   botCache,
   botHasChannelPermissions,
   botHasPermission,
-  botID,
   cache,
   hasChannelPermissions,
   memberIDHasPermission,
   Message,
   Permission,
 } from "../../deps.ts";
-import { sendResponse } from "../utils/helpers.ts";
 
 /** This function can be overriden to handle when a command has a mission permission. */
 async function missingCommandPermission(
@@ -36,7 +34,7 @@ async function missingCommandPermission(
   if (missingPermissions.find((perm) => perm === "SEND_MESSAGES" || perm === "VIEW_CHANNEL")) {
     return;
   }
-  await sendResponse(message, response).catch(console.log);
+  await message.send(response).catch(console.log);
 }
 
 botCache.inhibitors.set("permissions", async function (message, command, guild) {
