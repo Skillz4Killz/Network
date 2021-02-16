@@ -1,6 +1,8 @@
 export interface ClientSchema {
   id: string;
   botID: string;
+  // Templates
+  guildTemplates: string[];
   // Bot Statistics. Using string to prevent big ints from breaking.
   messagesProcessed: string;
   messagesDeleted: string;
