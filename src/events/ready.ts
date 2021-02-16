@@ -17,9 +17,6 @@ botCache.eventHandlers.ready = async function () {
   }, botCache.constants.milliseconds.HOUR);
 
   botCache.tasks.forEach(async (task) => {
-    // THESE TASKS MUST RUN WHEN STARTING BOT
-    if (["missions", "vipmembers"].includes(task.name)) await task.execute();
-
     setTimeout(async () => {
       console.log(`${bgBlue(`[${getTime()}]`)} => [TASK: ${bgYellow(black(task.name))}] Started.`);
       try {

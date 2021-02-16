@@ -33,12 +33,8 @@ botCache.eventHandlers.dispatchRequirements = async function (data, shardID) {
     return;
   }
 
-  // CERTAIN EVENTS ONLY USEFUL FOR VIP SERVERS
-  if (
-    data.t &&
-    ["GUILD_MEMBER_UPDATE", "MESSAGE_UPDATE", "MESSAGE_DELETE", "VOICE_STATE_UPDATE"].includes(data.t) &&
-    !botCache.vipGuildIDs.has(id)
-  ) {
+  // CERTAIN EVENTS ARE NOT USEFUL
+  if (data.t && ["GUILD_MEMBER_UPDATE", "MESSAGE_UPDATE", "MESSAGE_DELETE", "VOICE_STATE_UPDATE"].includes(data.t)) {
     return;
   }
 

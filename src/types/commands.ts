@@ -5,7 +5,6 @@ export enum PermissionLevels {
   MODERATOR,
   ADMIN,
   SERVER_OWNER,
-  VIP_SERVER,
   BOT_SUPPORT,
   BOT_DEVS,
   BOT_OWNER,
@@ -229,8 +228,6 @@ export interface Command<T extends readonly ArgumentDefinition[]> {
   arguments?: T;
   subcommands?: Collection<string, Command<T>>;
   usage?: string | string[];
-  vipServerOnly?: boolean;
-  vipUserOnly?: boolean;
   execute?: (message: Message, args: ConvertArgumentDefinitionsToArgs<T>, guild?: Guild) => unknown | Promise<unknown>;
 }
 

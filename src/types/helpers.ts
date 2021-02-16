@@ -19,6 +19,6 @@ export interface Helpers {
   ) => void;
 
   // Discord Helpers
-  reactError: (message: Message, vip?: boolean) => Promise<void>;
+  reactError: (message: Message) => Promise<void>;
   reactSuccess: (message: Message) => Promise<void>;
 }

@@ -1,4 +1,3 @@
-import { configs } from "./configs.ts";
 import { Collection, Guild, Message } from "./deps.ts";
 import { MessageCollector, ReactionCollector } from "./src/types/collectors.ts";
 import { Argument, Command, PermissionLevels } from "./src/types/commands.ts";
@@ -16,15 +15,12 @@ export const botCache = {
   commands: new Collection<string, Command<any>>(),
   eventHandlers: {} as CustomEvents,
 
-  vipUserIDs: new Set(configs.userIDs.botOwners),
-
   memberLastActive: new Collection<string, number>(),
   activeGuildIDs: new Set<string>(),
 
   // Guild Related Settings
   guildPrefixes: new Collection<string, string>(),
   guildLanguages: new Collection<string, string>(),
-  vipGuildIDs: new Set([configs.supportServerID]),
 
   messageCollectors: new Collection<string, MessageCollector>(),
   reactionCollectors: new Collection<string, ReactionCollector>(),

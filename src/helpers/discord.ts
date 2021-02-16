@@ -2,10 +2,7 @@ import { configs } from "../../configs.ts";
 import { botCache } from "../../deps.ts";
 import { translate } from "../utils/i18next.ts";
 
-botCache.helpers.reactError = async function (message, vip = false) {
-  if (vip) {
-    await message.reply(translate(message.guildID, "strings:NEED_VIP")).catch(console.log);
-  }
+botCache.helpers.reactError = async function (message) {
   await message
     .addReaction("❌")
     .then(async () => {
