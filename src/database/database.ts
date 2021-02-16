@@ -1,5 +1,5 @@
 import { Sabr, SabrTable } from "../../deps.ts";
-import { GuildSchema } from "./schemas.ts";
+import { ClientSchema, GuildSchema } from "./schemas.ts";
 
 // Create the database class
 const sabr = new Sabr();
@@ -9,6 +9,7 @@ sabr.error = async function () {};
 export const db = {
   // This will allow us to access table methods easily as we will see below.
   sabr,
+  client: new SabrTable<ClientSchema>(sabr, "client"),
   guilds: new SabrTable<GuildSchema>(sabr, "guilds"),
 };
 
