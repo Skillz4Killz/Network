@@ -13,7 +13,7 @@ This discord bot adds some key functionalities to discord:
 
 ## [➡️ Invite the Bot to Your Server 💌](https://discordapp.com/api/oauth2/authorize?client_id=591635332198301696&permissions=268512336&scope=bot)
 
-You can join the [Support Server](https://discord.gg/GhSbrqYZKN) to contact the developers.
+You can join the [Support Server](https://discord.gg/J4NqJ72) to contact the developers.
 
 ## Features
 
@@ -64,8 +64,8 @@ Something missing in Discord is being able to make a new server using a template
 
 ## Developers
 
-- Skillz4Killz [Discord](https://discord.gg/GhSbrqYZKN) | [Github](https://github.com/Skillz4Killz)
-- ITOH [Discord](https://discord.gg/GhSbrqYZKN) | [Github](https://github.com/itohatweb)
+- Skillz4Killz [Discord](https://discord.gg/J4NqJ72) | [Github](https://github.com/Skillz4Killz)
+- ITOH [Discord](https://discord.gg/J4NqJ72) | [Github](https://github.com/itohatweb)
 
 ## How We Built It
 
