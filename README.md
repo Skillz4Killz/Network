@@ -13,14 +13,13 @@ This discord bot adds some key functionalities to discord:
 
 ## [➡️ Invite the Bot to Your Server 💌](https://discordapp.com/api/oauth2/authorize?client_id=591635332198301696&permissions=268512336&scope=bot)
 
-You can join the [Support Server](https://discord.gg/wEkD2Dh) to contact the developers.
+You can join the [Support Server](https://discord.gg/GhSbrqYZKN) to contact the developers.
 
 ## Features
 
 ### Social Network Feature
 
 This feature brings some of the common functionalities of other social networks, like Twitter and Facebook, to Discord. This bot helps make Discord be the only social network anyone would ever need.
-
 
 ![Social Network Example](https://i.imgur.com/XqujC86.png)
 
@@ -33,7 +32,7 @@ This feature brings some of the common functionalities of other social networks,
       - ➕: you will **follow/unfollow** the original poster.
   - **#feed** => the posts from all the people you follow.
   - **#notifications** => all alerts: someone followed you, liked your post, reposted your post, etc.
-![Notification Example](https://i.imgur.com/nkuyvbM.png)
+    ![Notification Example](https://i.imgur.com/nkuyvbM.png)
   - **#photos** => all your photos that you posted in #wall.
   - **@subscribers** => In case you want to ping users.
     - This will only work when you @subscribers and you assign the subscriber role to users. It is not done automatically to prevent abuse.
@@ -65,26 +64,19 @@ Something missing in Discord is being able to make a new server using a template
 
 ## Developers
 
-- Skillz4Killz [Discord](https://discord.gg/rWMuMdk) | [Github](https://github.com/Skillz4Killz)
-- [Charalampos Fanoulis](https://github.com/cfanoulis)
-- [VoidTecc](https://github.com/VoidCodes)
-- [Hutch Moore](https://github.com/tech6hutch)
+- Skillz4Killz [Discord](https://discord.gg/GhSbrqYZKN) | [Github](https://github.com/Skillz4Killz)
+- ITOH [Discord](https://discord.gg/GhSbrqYZKN) | [Github](https://github.com/itohatweb)
 
 ## How We Built It
 
 ### Technology Used
 
-1. [TypeScript](https://github.com/Microsoft/TypeScript) + [NodeJS](https://nodejs.org) - The language and runtime used by the bot.
-2. [Discord.JS](https://discord.js.org) - The Discord API wrapper used.
-3. [Klasa](https://klasa.js.org) - The most complete Discord.JS framework that helps make bot development easier.
-4. [MongoDB](https://www.mongodb.com) - Database used to store information needed to make the bot work, like settings.
-
+1. [TypeScript](https://github.com/Microsoft/TypeScript) + [Deno](https://deno.land) - The language and runtime used by the bot.
+2. [Discordeno](https://discordeno.mod.land) - The Discord API wrapper used.
+3. [Sabr](https://github.com/Skillz4Killz/Sabr) - Database used to store information needed to make the bot work, like settings.
 
 ## Steps To Host Your Own
 
 1. Clone the repo. Give it a ⭐️at the top to support us.
 2. Create the configs.ts file using the example file.
 3. Create a Discord Bot at Discord Developer portal and get the token. Paste the token in the configs.ts file.
-4. Create an account on MongoDB Atlas and create a new cluster. Once you create a new connection. Add the connection url to the configs file.
-5. `yarn`
-6. `yarn develop`
