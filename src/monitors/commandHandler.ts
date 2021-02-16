@@ -21,25 +21,25 @@ import { handleError } from "../utils/errors.ts";
 import { getTime } from "../utils/helpers.ts";
 import { translate } from "../utils/i18next.ts";
 
-export const parsePrefix = (guildID: string | undefined) => {
+export function parsePrefix(guildID: string | undefined) {
   const prefix = guildID ? botCache.guildPrefixes.get(guildID) : configs.prefix;
   return prefix || configs.prefix;
-};
+}
 
-export const parseCommand = (commandName: string) => {
+export function parseCommand(commandName: string) {
   const command = botCache.commands.get(commandName);
   if (command) return command;
 
   // Check aliases if the command wasn't found
   return botCache.commands.find((cmd) => Boolean(cmd.aliases?.includes(commandName)));
-};
+}
 
-export const logCommand = (
+export function logCommand(
   message: Message,
   guildName: string,
   type: "Failure" | "Success" | "Trigger" | "Slowmode" | "Missing" | "Inhibit",
   commandName: string
-) => {
+) {
   if (type === "Trigger") {
     botCache.stats.commandsRan += 1;
   }
@@ -51,7 +51,7 @@ export const logCommand = (
   const guild = bgMagenta(black(`${guildName}${message.guildID ? `(${message.guildID})` : ""}`));
 
   console.log(`${bgBlue(`[${getTime()}]`)} => ${command} by ${user} in ${guild} with MessageID: ${message.id}`);
-};
+}
 
 /** Parses all the arguments for the command based on the message sent by the user. */
 async function parseArguments(message: Message, command: Command<any>, parameters: string[]) {
