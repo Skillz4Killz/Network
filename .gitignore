@@ -1,5 +1,11 @@
+# Don't leak the token
 configs.ts
+
+# We don't want the db to be on gh
 db
+
+# Just a important import file generated automatically
+fileloader.ts
 
 # Just for rewriting
 old-src
