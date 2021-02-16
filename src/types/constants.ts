@@ -69,4 +69,9 @@ export interface Constants {
     votedown: string;
     voteup: string;
   };
+  personalities: {
+    id: string;
+    name: string;
+    names: string[];
+  }[];
 }
