@@ -1,6 +1,5 @@
 // This task will update the database once a minute with all the latest product analytics
-import { botCache } from "../../deps.ts";
-import { botID } from "../../deps.ts";
+import { botCache, botID } from "../../deps.ts";
 import { db } from "../database/database.ts";
 
 botCache.tasks.set(`botstats`, {
@@ -13,6 +12,7 @@ botCache.tasks.set(`botstats`, {
       await db.client.create(botID, {
         id: botID,
         botID,
+        guildTemplates: [],
         messagesProcessed: "0",
         messagesDeleted: "0",
         messagesEdited: "0",
