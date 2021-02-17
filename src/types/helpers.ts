@@ -41,4 +41,7 @@ export interface Helpers {
   fetchMember: (guildID: string, userID: string) => Promise<Member | undefined>;
   fetchMembers: (guildID: string, userIDs: string[]) => Promise<Collection<string, Member> | undefined>;
   memberTag: (message: Message) => string;
+
+  // Database stuff
+  upsertGuild: (id: string) => Promise<GuildSchema>;
 }
