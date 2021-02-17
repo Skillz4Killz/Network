@@ -24,6 +24,9 @@ export interface GuildSchema {
   wallChannelID: string;
   photosChannelID: string;
   feedChannelID: string;
+  notificationChannelID: string;
+
+  subscriberRoleIDs: string[];
 }
 
 export interface UserSchema {
