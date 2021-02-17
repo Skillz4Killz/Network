@@ -1,5 +1,5 @@
 import { configs } from "../../configs.ts";
-import { botCache, botHasChannelPermissions, cache, Collection, fetchMembers, Member } from "../../deps.ts";
+import { botCache, botHasChannelPermissions, cache, Collection, fetchMembers, getMessage, Member } from "../../deps.ts";
 import { translate } from "../utils/i18next.ts";
 
 // botCache.helpers.isModOrAdmin = (message, settings) => {
@@ -155,4 +155,11 @@ botCache.helpers.memberTag = function (message) {
   if (member) return member.tag;
 
   return `${message.author.username}#${message.author.discriminator}`;
+};
+
+botCache.helpers.getMessage = async function (channelID, id) {
+  const cachedMessage = cache.messages.get(id);
+  if (cachedMessage) return cachedMessage;
+
+  return getMessage(channelID, id).catch(() => undefined);
 };
