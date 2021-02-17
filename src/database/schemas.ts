@@ -20,4 +20,16 @@ export interface GuildSchema {
   id: string;
   prefix: string;
   language: string;
+
+  wallChannelID: string;
+  photosChannelID: string;
+  feedChannelID: string;
+}
+
+export interface UserSchema {
+  following: string[];
+  profile: {
+    serverID: string;
+    language: string;
+  };
 }
