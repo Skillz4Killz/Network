@@ -46,7 +46,7 @@ botCache.monitors.set("wallpost", {
     // Now we have to repost this in every followers feed
     const users = await db.users.findMany((u) => u.following.includes(message.author.id));
     users.forEach(async (user) => {
-      const settings = await db.guilds.get(user.profile.serverID);
+      const settings = await db.guilds.get(user.profile.guildID);
       if (!settings?.feedChannelID) return;
 
       // Make sure to catch these so we don't stop the whole loop on one error from 1 user
