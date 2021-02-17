@@ -16,6 +16,9 @@ botCache.helpers.upsertGuild = async function (id: string) {
     wallChannelID: "",
     photosChannelID: "",
     feedChannelID: "",
+    notificationChannelID: "",
+
+    subscriberRoleIDs: [],
   });
 
   const guild = await db.guilds.get(id);
