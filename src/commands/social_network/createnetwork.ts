@@ -34,15 +34,15 @@ createCommand({
 
     const settings = await botCache.helpers.upsertGuild(message.guildID);
     if (settings.wallChannelID) {
-      return message.send(
+      return message.reply(
         "Sorry, this server already has a setup for the social network. This command only works when the server is not setup. Please create a new server, invite the bot and try this command aggain."
       );
     }
 
-    const profile = await db.users.get(message.author.id);
-    if (profile?.profile.serverID) {
+    const userProfile = await db.users.get(message.author.id);
+    if (userProfile?.profile.guildID) {
       // TODO: `Sorry, you can only have one profile server. You have set ${this.client.guilds.get(userProfileServerID).name} as your profile server.`
-      return message.send(`Sorry, you can only have one profile server.`);
+      return message.reply(`Sorry, you can only have one profile server.`);
     }
 
     // Create the initial embed
@@ -187,6 +187,11 @@ createCommand({
         photosChannelID: photosChannel.id,
         wallChannelID: wallChannel.id,
         subscriberRoleIDs: rolesCreated.map((r) => r.id),
+      });
+
+      await db.users.create(message.author.id, {
+        following: [],
+        profile: { guildID: message.guildID, language: "english" },
       });
 
       // Alert the user that it is done
