@@ -1,8 +1,5 @@
-import { createGuildChannel } from "https://deno.land/x/discordeno@10.3.0/src/api/handlers/guild.ts";
-import { botID } from "https://deno.land/x/discordeno@10.3.0/src/bot.ts";
-import { OverwriteType } from "https://deno.land/x/discordeno@10.3.0/src/types/guild.ts";
 import { botCache } from "../../../cache.ts";
-import { cache, ChannelTypes, createGuildRole } from "../../../deps.ts";
+import { botID, cache, ChannelTypes, createGuildChannel, createGuildRole, OverwriteType } from "../../../deps.ts";
 import { db } from "../../database/database.ts";
 import { PermissionLevels } from "../../types/commands.ts";
 import { Embed } from "../../utils/Embed.ts";
