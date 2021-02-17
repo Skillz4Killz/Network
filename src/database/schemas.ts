@@ -32,7 +32,7 @@ export interface GuildSchema {
 export interface UserSchema {
   following: string[];
   profile: {
-    serverID: string;
+    guildID: string;
     language: string;
   };
 }
