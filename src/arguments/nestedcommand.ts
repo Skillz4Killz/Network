@@ -1,5 +1,5 @@
 import { botCache } from "../../deps.ts";
-import { Command } from "../utils/helpers.ts";
+import { Command } from "../types/commands.ts";
 
 botCache.arguments.set("nestedcommand", {
   name: "nestedcommand",
