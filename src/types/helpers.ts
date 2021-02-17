@@ -40,6 +40,7 @@ export interface Helpers {
   moveMessageToOtherChannel: (message: Message, channelID: string) => Promise<Message | undefined>;
   fetchMember: (guildID: string, userID: string) => Promise<Member | undefined>;
   fetchMembers: (guildID: string, userIDs: string[]) => Promise<Collection<string, Member> | undefined>;
+  getMessage: (channelID: string, messageID: string) => Promise<Message | undefined>;
   memberTag: (message: Message) => string;
 
   // Database stuff
