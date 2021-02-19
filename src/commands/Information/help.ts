@@ -29,8 +29,7 @@ createCommand({
     if (!args.command || (args.command.nsfw && !cache.channels.get(message.channelID)?.nsfw)) {
       return message.reply(
         [
-          "",
-          translate(message.guildID, "strings:HELP_SPECIFIC", { prefix }),
+          translate(message.guildID, "strings:GENERAL_HELP"),
           `${translate(message.guildID, "strings:NEED_SUPPORT")} ${configs.botSupportInvite}`,
         ].join("\n")
       );
