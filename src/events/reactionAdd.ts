@@ -73,7 +73,7 @@ async function handleProfileReaction(
         .setDescription(
           `[${
             postEmbed.description.length > 50 ? postEmbed?.description.substring(0, 50) + "..." : postEmbed?.description
-          }](${message?.link})`
+          }](https://discord.com/${uncachedMessage.guildID}/${uncachedMessage.channelID}/${uncachedMessage.id})`
         );
 
       await sendMessage(originalGuildSettings.notificationChannelID, { embed: heartEmbed }).catch(console.log);
@@ -99,7 +99,9 @@ async function handleProfileReaction(
         .setAuthor(member.tag, member.avatarURL)
         .setTitle("🔁 your Post")
         // TODO: `${user.tag} has reposted your post from ${message.guild.name} guild and it has now been shared to ${reactorGuild ? reactorGuild.name : "**Server Not Found**"} guild.`
-        .setDescription(`${member.tag} has reposted your post`);
+        .setDescription(
+          `${member.tag} has reposted your [post](https://discord.com/${uncachedMessage.guildID}/${uncachedMessage.channelID}/${uncachedMessage.id})`
+        );
 
       await sendMessage(originalGuildSettings.notificationChannelID, { embed: repostEmbed }).catch(console.log);
 
