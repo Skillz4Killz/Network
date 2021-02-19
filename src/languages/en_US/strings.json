@@ -1,5 +1,18 @@
 {
   "GENERAL_HELP": "Network Bot is a bot built for the Discord Hackathon June 2019. It's built with the Discordeno library.\nThe bot adds some key functionalities to Discord:\n\n✅ True social network\n  • 💬 It's time to ditch Twitter and Facebook.\n  • All-in-one voice and text chat social network that's free, secure, and works on both your desktop and phone.\n  • Stop risking your private info with Facebook and hassling with Twitter. Simplify your life.\n  • Create your social network with **.createnetwork**\n  • Make posts, like posts with ❤ reaction, Repost on your #wall with 🔁 reaction, Follow users with ➕ reaction.\n\n✅ Server template networks',\n  • 🌐 Create a fresh copy of a server based on a template server.\n  • Use one of the predefined templates. (**.createschool**)\n  • Create your own custom templates. (**.savetemplate**, **.removetemplate**, **.createserver GuildID**)\nWe hope Discord will love the idea enough to consider us a winner and even add the feature to Discord directly.\nDiscord is Love! Discord is Life!\nhttps://i.imgur.com/iYXStzo.png",
   "NEED_SUPPORT": "Need help?",
-  "INVITE": "To add {{name}} to your Discord guild use this invite: {{invite}}"
+  "INVITE": "To add {{name}} to your Discord guild use this invite: {{invite}}",
+  "PING_TIME": "🏓 **Response Time**: `{{time}}` seconds  🕙",
+  "HELP_DESCRIPTION": "Get help with a command `{{prefix}}help command`",
+  "INVITE_DESCRIPTION": "Add the bot to your guild!",
+  "PING_DESCRIPTION": "🏓 Shows the response time for the bot.",
+  "STATS_DESCRIPTION": "📊 Show some cool stats about the bot.",
+  "PREFIX_DESCRIPTION": "⭐ View or set a custom prefix for your server.",
+  "PREFIX_USAGE": [
+    "**{{prefix}}settings prefix** ~ View the current prefix of the server.",
+    "**{{prefix}}settings prefix !** ~ Sets a new prefix for the server."
+  ],
+  "CREATENETWORK_DESCRIPTION": "Create a new Social network for your server.",
+  "FOLLOW_DESCRIPTION": "(Un)Follow a users social network",
+  "FOLLOW_USAGE": ["{{prefix}}follow @user", "{{prefix}}follow userID"]
 }
