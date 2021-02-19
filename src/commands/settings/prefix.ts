@@ -3,10 +3,10 @@ import { db } from "../../database/database.ts";
 import { parsePrefix } from "../../monitors/commandHandler.ts";
 import { PermissionLevels } from "../../types/commands.ts";
 import { Embed } from "../../utils/Embed.ts";
-import { createSubcommand } from "../../utils/helpers.ts";
+import { createCommand } from "../../utils/helpers.ts";
 
 // This command will only execute if there was no valid sub command: !prefix
-createSubcommand("settings", {
+createCommand({
   name: "prefix",
   arguments: [
     {
