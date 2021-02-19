@@ -1,38 +1,48 @@
-import { Command, klasaVersion, Duration, discordJSVersion, MessageEmbed, CommandStore, KlasaMessage } from '../../imports';
+import { botCache, cache } from "../../../deps.ts";
+import { createCommand, humanizeMilliseconds } from "../../utils/helpers.ts";
+import { translate } from "../../utils/i18next.ts";
+import { Embed } from "./../../utils/Embed.ts";
 
-export default class extends Command {
+const UPTIME = Date.now();
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			description: language => language.get('COMMAND_STATS_DESCRIPTION')
-		});
-	}
+createCommand({
+  name: "stats",
+  botChannelPermissions: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
+  guildOnly: true,
+  execute: async function (message, _args) {
+    let totalMemberCount = 0;
 
-	public async run(message: KlasaMessage) {
-		let [users, guilds, channels, memory] = [0, 0, 0, 0];
+    for (const guild of cache.guilds.values()) {
+      totalMemberCount += guild.memberCount;
+    }
 
-		if (this.client.shard) {
-			const results = await this.client.shard.broadcastEval(`[this.users.size, this.guilds.size, this.channels.size, (process.memoryUsage().heapUsed / 1024 / 1024)]`);
-			for (const result of results) {
-				users += result[0];
-				guilds += result[1];
-				channels += result[2];
-				memory += result[3];
-			}
-		}
+    const commands = botCache.commands.reduce(
+      (subtotal, command) => subtotal + 1 + (command.subcommands?.size || 0),
+      0
+    );
 
-		return message.send(new MessageEmbed()
-			.setAuthor('Bot Statistics', this.client.user.displayAvatarURL())
-			.setColor('RANDOM')
-			.addField('Memory Usage', (memory || process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2), true)
-			.addField('Uptime', Duration.toNow(Date.now() - (process.uptime() * 1000)), true)
-			.addField('Users', (users || this.client.users.size).toLocaleString(), true)
-			.addField('Guilds', (guilds || this.client.guilds.size).toLocaleString(), true)
-			.addField('Channels', (channels || this.client.channels.size).toLocaleString(), true)
-			.addField('Klasa', `v${klasaVersion}`, true)
-			.addField('Discord.JS', `v${discordJSVersion}`, true)
-			.addField('Node.js', process.version, true)
-			.addField('Shard', `${(message.guild ? message.guild.shardID : 0) + 1} / ${this.client.options.totalShardCount}`, true));
-	}
+    const embed = new Embed()
+      .setTitle(translate(message.guildID, "strings:BOT_STATS"))
+      .setColor("random")
+      .addField(
+        translate(message.guildID, "strings:SERVERS"),
+        botCache.helpers.cleanNumber((cache.guilds.size + botCache.dispatchedGuildIDs.size).toLocaleString()),
+        true
+      )
+      .addField(
+        translate(message.guildID, "strings:MEMBERS"),
+        botCache.helpers.cleanNumber(totalMemberCount.toLocaleString()),
+        true
+      )
+      .addField(
+        translate(message.guildID, "strings:CHANNELS"),
+        botCache.helpers.cleanNumber((cache.channels.size + botCache.dispatchedChannelIDs.size).toLocaleString()),
+        true
+      )
+      .addField(translate(message.guildID, "strings:UPTIME"), humanizeMilliseconds(Date.now() - UPTIME), true)
+      .addField(translate(message.guildID, "strings:COMMANDS"), commands.toLocaleString(), true)
+      .setTimestamp();
 
-}
+    return message.send({ embed });
+  },
+});

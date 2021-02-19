@@ -1,51 +1,105 @@
-import { Command, klasaUtil, MessageEmbed, KlasaMessage, CommandStore } from '../../imports';
+import { configs } from "../../../configs.ts";
+import { botCache, cache } from "../../../deps.ts";
+import { parsePrefix } from "../../monitors/commandHandler.ts";
+import { Command } from "../../types/commands.ts";
+import { createCommand } from "../../utils/helpers.ts";
+import { translate } from "../../utils/i18next.ts";
 
-export default class extends Command {
+createCommand({
+  name: "help",
+  aliases: ["h", "commands", "cmd", "cmds"],
+  arguments: [
+    {
+      name: "all",
+      type: "string",
+      literals: ["all"],
+      required: false,
+    },
+    {
+      name: "command",
+      type: "nestedcommand",
+      required: false,
+    },
+  ] as const,
+  execute: async function (message, args, guild) {
+    if (!guild) return;
 
-	protected handlers: Map<any, any>;
-	public constructor(store: CommandStore, file: string[], directory) {
-		super(store, file, directory, {
-			aliases: ['commands', 'cmd', 'cmds'],
-			guarded: true,
-			description: language => language.get('COMMAND_HELP_DESCRIPTION'),
-			usage: '[command:command]'
-		});
-	}
+    const prefix = parsePrefix(message.guildID);
 
-	public async run(message: KlasaMessage, [command]: [Command | undefined]) {
-		// If a single command is given like `.help invite` we can just return a simple embed response
-		if (command) {
-			const embed = new MessageEmbed()
-				.setTitle(command.name)
-				.setDescription(klasaUtil.isFunction(command.description) ? command.description(message.language) : command.description)
-				.addField('Usage', message.language.get('COMMAND_HELP_USAGE', command.usage.fullUsage(message)))
-				.addField('Extended help', (klasaUtil.isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp) ? klasaUtil.isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp : 'The best way to learn is just to try it out.')
-				.setColor('48929b')
-				.setFooter(`Requested by ${message.author.username}`);
+    if (!args.command || (args.command.nsfw && !cache.channels.get(message.channelID)?.nsfw)) {
+      return message.reply(
+        [
+          translate(message.guildID, "strings:GENERAL_HELP"),
+          `${translate(message.guildID, "strings:NEED_SUPPORT")} ${configs.botSupportInvite}`,
+        ].join("\n")
+      );
+    }
 
-			return message.send(embed);
-		}
+    const [help, ...commandNames] = message.content.split(" ");
 
-		const prefix = message.guild.settings.get('prefix');
-		const isOwner = message.guild.ownerID === message.author.id;
-		const embed = new MessageEmbed()
-			.setColor('48929b');
+    let commandName = "";
+    let relevantCommand: Command<any> | undefined;
 
-		const categoryCommands = {};
-		for (const command of this.client.commands.values()) {
-			// If its a bot owner command just skip
-			if (command.permissionLevel === 10) continue;
-			// create the full description whether its a function or a string. Functions are in core commands.
-			const description = klasaUtil.isFunction(command.description) ? command.description(message.language) : command.description;
-			// Check to see and create an array for this commands category if it doesnt exist
-			if (!categoryCommands[command.category]) categoryCommands[command.category] = [];
-			// Push the final description for this command
-			categoryCommands[command.category].push(`\`${prefix}${command.name}\`${!isOwner && command.permissionLevel === 7 ? ' : **Server Owners Only**' : ''} => ${description}`);
-		}
+    for (const name of commandNames) {
+      // If no command name yet we search for a command itself
+      if (!commandName) {
+        const cmd =
+          botCache.commands.get(name) ||
+          botCache.commands.find((c) => Boolean(c.aliases?.includes(name.toLowerCase())));
+        if (!cmd) return botCache.helpers.reactError(message);
 
-		for (const category of Object.keys(categoryCommands)) embed.addField(category, categoryCommands[category].join('\n'));
+        commandName = cmd.name.toUpperCase();
+        relevantCommand = cmd;
+        continue;
+      }
 
-		return message.send(embed);
-	}
+      // Look for a subcommand inside the latest command
+      const cmd =
+        relevantCommand?.subcommands?.get(name) ||
+        relevantCommand?.subcommands?.find((c) => Boolean(c.aliases?.includes(name.toLowerCase())));
+      if (!cmd) break;
 
-}
+      commandName += `_${cmd.name.toUpperCase()}`;
+      relevantCommand = cmd;
+    }
+
+    const USAGE = `**${translate(message.guildID, "strings:USAGE")}**`;
+    const USAGE_DETAILS = translate(message.guildID, `strings:${commandName}_USAGE`, { prefix, returnObjects: true });
+    let DESCRIPTION = args.command.description
+      ? args.command.description.startsWith("strings:")
+        ? translate(message.guildID, args.command.description, {
+            returnObjects: true,
+          })
+        : args.command.description
+      : "";
+    if (Array.isArray(DESCRIPTION)) DESCRIPTION = DESCRIPTION.join("\n");
+
+    const embed = botCache.helpers
+      .authorEmbed(message)
+      .setTitle(
+        translate(message.guildID, `strings:COMMAND`, {
+          name: commandNames.join(" "),
+        })
+      )
+      .setDescription(DESCRIPTION || translate(message.guildID, `strings:${commandName}_DESCRIPTION`))
+      .addField(
+        USAGE,
+        typeof args.command.usage === "string"
+          ? args.command.usage
+          : Array.isArray(args.command.usage)
+          ? args.command.usage.map((details) => translate(message.guildID, details, { prefix })).join("\n")
+          : Array.isArray(USAGE_DETAILS) && USAGE_DETAILS?.length
+          ? USAGE_DETAILS.join("\n")
+          : `${prefix}${commandNames.join(" ")}`
+      )
+      .setColor("48929b");
+    if (args.command.aliases?.length) {
+      embed.addField(
+        translate(message.guildID, "strings:ALIASES"),
+        args.command.aliases.map((alias) => `${prefix}${alias}`).join(", ")
+      );
+    }
+
+    await message.send({ embed });
+  },
+});

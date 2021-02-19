@@ -1,0 +1,77 @@
+export interface Constants {
+  milliseconds: {
+    YEAR: number;
+    MONTH: number;
+    WEEK: number;
+    DAY: number;
+    HOUR: number;
+    MINUTE: number;
+    SECOND: number;
+  };
+  emojis: {
+    letters: string[];
+    giveaway: string;
+    slam: string;
+    snap: string;
+    dab: string;
+    gamerHug: string;
+    gamerHeart: string;
+    gamerOnFire: string;
+    gamerCry: string;
+    bite: string;
+    pat: string;
+    poke: string;
+    lmao: string;
+    tantrum: string;
+    furious: string;
+    hurray: string;
+    heartthrob: string;
+    starry: string;
+    toastspinning: string;
+    twohundretIQ: string;
+    huh: string;
+    Aquaaah: string;
+    NezukoDance: string;
+    dancemonkey: string;
+    RemDance: string;
+    shrug: string;
+    boosts: string;
+    bot: string;
+    coin: string;
+    colors: {
+      red: string;
+      purplered: string;
+      purple: string;
+      pinkpurple: string;
+      pink: string;
+      pedall: string;
+      pastelyellow: string;
+      pastelred: string;
+      pastelpurple: string;
+      pastelpink: string;
+      pastelorange: string;
+      pastelgreen: string;
+      pastelblue: string;
+      orange: string;
+      limegreen: string;
+      lightorange: string;
+      lightblue: string;
+      brown: string;
+      brightyellow: string;
+      brightpink: string;
+      blue: string;
+    };
+    defaults: Set<string>;
+    failure: string;
+    numbers: string[];
+    quit: string;
+    success: string;
+    votedown: string;
+    voteup: string;
+  };
+  personalities: {
+    id: string;
+    name: string;
+    names: string[];
+  }[];
+}

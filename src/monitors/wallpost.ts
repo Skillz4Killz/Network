@@ -1,83 +1,59 @@
-import { KlasaMessage, Monitor, MonitorStore } from 'klasa';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { TextChannel, MessageEmbed, Message } from 'discord.js';
-import { UserSettings } from '../lib/types/settings/UserSettings';
+import { botCache, rawAvatarURL, sendMessage } from "../../deps.ts";
+import { db } from "../database/database.ts";
+import { Embed } from "../utils/Embed.ts";
+import { translate } from "../utils/i18next.ts";
 
-const postReactions = ['❤', '🔁', '➕'];
-export default class extends Monitor {
+const postReactions = ["❤", "🔁", "➕"];
 
-	public constructor(store: MonitorStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			ignoreOthers: false
-		});
-	}
+botCache.monitors.set("wallpost", {
+  name: "wallpost",
+  botChannelPermissions: ["ADD_REACTIONS"],
+  ignoreDM: true,
+  execute: async function (message) {
+    // Only owners can post
+    if (message.author.id !== message.guild?.ownerID) return;
 
-	public async run(message: KlasaMessage) {
-		// If the message is not in a guild cancel out or the user doesnt have permissions to add reactions
-		if (!message.guild || !(message.channel as TextChannel).permissionsFor(message.guild.me).has('ADD_REACTIONS')) return null;
+    // If the guild doesnt have a wall channel or if this is NOT the wall channel cancel it
+    const settings = await db.guilds.get(message.guildID);
+    if (!settings?.wallChannelID || settings.wallChannelID !== message.channelID) return;
 
-		// Only owners can post
-		if (message.guild.ownerID !== message.author.id) return null;
+    const imageURL = message.attachments[0]?.url;
 
-		// If the guild doesnt have a wall channel or if this is NOT the wall channel cancel it
-		const wallChannelID = message.guild.settings.get(GuildSettings.Channels.WallID) as GuildSettings.Channels.TextChannelID;
-		if (!wallChannelID || (wallChannelID !== message.channel.id)) return null;
+    const embed = new Embed()
+      .setAuthor(
+        message.member?.tag ?? `${message.author.username}#${message.author.discriminator}`,
+        rawAvatarURL(message.author.id, message.author.discriminator, message.author.avatar)
+      )
+      .setColor("RANDOM")
+      .setDescription(message.content)
+      .setImage(imageURL ?? "")
+      .setTimestamp()
+      .setFooter(message.author.id);
+    console.log(embed);
 
-		const imageURL = message.attachments.size ? message.attachments.first().url : null;
+    // Resend the message as an embed
+    const posted = await message.send({ embed });
+    posted.addReactions(postReactions, true);
 
-		const embed = new MessageEmbed()
-			.setAuthor(message.author.tag, message.author.displayAvatarURL())
-			.setColor('RANDOM')
-			.setDescription(message.content)
-			.setImage(imageURL)
-			.setTimestamp()
-			.setFooter(message.author.id);
+    // Delete the original message the author posted to keep channel clean
+    await message.delete(translate(message.guildID, "strings:CLEAR_SPAM")).catch(console.log);
 
-		try {
-			// Resend the message as an embed
-			const posted = await message.send(embed) as Message;
-			// Add the reactions to the message
-			for (const reaction of postReactions) await posted.react(reaction);
+    // If an image was attached post the image in #photos
+    if (imageURL && settings.photosChannelID) {
+      await sendMessage(settings.photosChannelID, { embed });
+    }
 
-			// Delete the original message the author posted to keep channel clean
-			if (message.deletable && !message.deleted) await message.delete();
+    // Now we have to repost this in every followers feed
+    const users = await db.users.findMany((u) => u.following.includes(message.author.id));
+    users.forEach(async (user) => {
+      const settings = await db.guilds.get(user.profile.guildID);
+      if (!settings?.feedChannelID) return;
 
-			// If an image was attached post the image in #photos
-			if (imageURL) {
-				const [photosChannel] = await message.guild.settings.resolve(GuildSettings.Channels.PhotosID);
-				if (!photosChannel) return posted;
+      // Make sure to catch these so we don't stop the whole loop on one error from 1 user
+      const feedPost = await sendMessage(settings.feedChannelID, { embed }).catch(console.log);
+      if (!feedPost) return;
 
-				await photosChannel.send(embed);
-			}
-
-			// Now we have to repost this in every followers feed
-			for (const user of this.client.users.values()) {
-				const [followers, serverID] = user.settings.pluck(UserSettings.Following, UserSettings.Profile.ServerID);
-				// If this user is not following then skip
-				if (!followers.includes(message.author.id)) continue;
-
-				// This user is following so get the profile server for this user
-				const guild = this.client.guilds.get(serverID);
-				if (!guild) continue;
-
-				// Get the channel from the settings
-				const [feedChannel] = await guild.settings.resolve(GuildSettings.Channels.FeedID);
-				if (!feedChannel) continue;
-
-				// Make sure to catch these so we dont stop the whole loop on one error from 1 user
-				const feedPost = await feedChannel.send(embed).catch(() => null);
-				if (!feedPost) continue;
-
-				for (const reaction of postReactions) await feedPost.react(reaction).catch(() => null);
-			}
-
-			// Return a message for the finalizers
-			return posted;
-		} catch (error) {
-			// Silently error cause monitors are way too risky to send messages
-			return this.client.emit('error', error);
-		}
-	}
-
-}
-
+      feedPost.addReactions(postReactions, true);
+    });
+  },
+});

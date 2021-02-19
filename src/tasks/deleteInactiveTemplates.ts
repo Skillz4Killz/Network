@@ -1,24 +1,20 @@
-import { Task } from '../imports';
-import { ClientSettings } from '../lib/types/settings/ClientSettings';
+import { botCache } from "../../cache.ts";
+import { botID, cache } from "../../deps.ts";
+import { db } from "../database/database.ts";
 
-export default class extends Task {
+botCache.tasks.set("deleteInactiveTemplates", {
+  name: "deleteInactiveTemplates",
+  interval: botCache.constants.milliseconds.DAY,
+  execute: async function () {
+    // Get the templates
+    const templates = (await db.client.get(botID))?.guildTemplates;
 
-	public async run() {
-		// Get our templates
-		const templates = await this.client.settings.get(ClientSettings.GuildTemplates) as ClientSettings.GuildTemplates;
+    // Filter out all the inactive guilds
+    const newTemplates = templates?.filter((id) => botCache.dispatchedGuildIDs.has(id) || cache.guilds.has(id));
 
-		// Filter out all the inactive guilds
-		const newTemplates = templates.filter(id => this.client.guilds.has(id));
+    if (templates?.length === newTemplates?.length) return;
 
-		if (templates.length === newTemplates.length) return null;
-
-		// Update the database to remove all guilds that no longer exist
-		return this.client.settings.update(ClientSettings.GuildTemplates, newTemplates, { arrayAction: 'overwrite', throwOnError: true });
-	}
-
-	public async init() {
-		const taskExists = this.client.schedule.tasks.some(task => task.taskName === 'deleteInactiveTemplates');
-		if (!taskExists) this.client.schedule.create('deleteInactiveTemplates', '@daily');
-	}
-
-}
+    // Update the database to remove all guilds that no longer exist
+    db.client.update(botID, { guildTemplates: newTemplates });
+  },
+});
