@@ -4,7 +4,7 @@ import {
   cache,
   MessageReactionUncachedPayload,
   ReactionPayload,
-  removeReaction,
+  removeUserReaction,
   sendMessage,
 } from "../../deps.ts";
 import { db } from "../database/database.ts";
@@ -123,7 +123,7 @@ async function handleProfileReaction(
 
       await db.users.update(userID, { following: userSettings.following });
 
-      await removeReaction(uncachedMessage.channelID, uncachedMessage.id, "➕").catch(console.log);
+      await removeUserReaction(uncachedMessage.channelID, uncachedMessage.id, "➕", userID).catch(console.log);
       return message?.alertReply(`You are ${isAlreadyFollowing ? "no longer" : "now"} following this user.`, 5);
     }
   }
