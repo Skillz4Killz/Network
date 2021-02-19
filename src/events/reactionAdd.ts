@@ -1,9 +1,16 @@
-import { Message } from "https://deno.land/x/discordeno@10.3.0/src/api/structures/message.ts";
-import { MessageReactionUncachedPayload, ReactionPayload } from "https://deno.land/x/discordeno@10.3.0/src/types/message.ts";
-import { botCache, botID } from "../../deps.ts";
+import {
+  botCache,
+  botID,
+  cache,
+  MessageReactionUncachedPayload,
+  ReactionPayload,
+  removeReaction,
+  sendMessage,
+} from "../../deps.ts";
 import { db } from "../database/database.ts";
+import { Embed } from "../utils/Embed.ts";
 
-botCache.eventHandlers.reactionAdd = async function (message, emoji, userID){
+botCache.eventHandlers.reactionAdd = async function (message, emoji, userID) {
   // IGNORE REACTIONS UNTIL BOT IS READY
   if (!botCache.fullyReady) return;
 
@@ -13,14 +20,14 @@ botCache.eventHandlers.reactionAdd = async function (message, emoji, userID){
   // Process reaction collectors.
   botCache.helpers.processReactionCollectors(message, emoji, userID);
 
-  // For this part reactions from DMs aren't important 
-  if (!message.guildID) return
+  // For this part reactions from DMs aren't important
+  if (!message.guildID) return;
 
   // If its a bot or doesnt exist cancel out
-  if (!message.member || message.member.user.bot) return
-  
-  const settings = await db.guilds.get(message.guildID)
-  if (!settings) return
+  if (!message.member || message.member.user.bot) return;
+
+  const settings = await db.guilds.get(message.guildID);
+  if (!settings) return;
 
   switch (message.channelID) {
     // If it is one of the profile channels run the profile reaction handler
@@ -32,129 +39,92 @@ botCache.eventHandlers.reactionAdd = async function (message, emoji, userID){
   }
 };
 
-async function handleProfileReaction(uncachedMessage: MessageReactionUncachedPayload, emoji: ReactionPayload, userID: string) {
+async function handleProfileReaction(
+  uncachedMessage: MessageReactionUncachedPayload,
+  emoji: ReactionPayload,
+  userID: string
+) {
+  const member = cache.members.get(userID);
+  if (!member) return;
+
   const message = await botCache.helpers.getMessage(uncachedMessage.channelID, uncachedMessage.id);
 
-  const postEmbed = message?.embeds[0]
+  const postEmbed = message?.embeds[0];
+  if (!postEmbed?.description) return;
 
   // Get the author id for the original author
-  const originalAuthorID = postEmbed?.footer?.text
-  if (!originalAuthorID) return
+  const originalAuthorID = postEmbed?.footer?.text;
+  if (!originalAuthorID) return;
 
-  const originalAuthorSettings = await db.users.get(originalAuthorID)
-  if (!originalAuthorSettings) return
-  
-  const originalAuthor = await botCache.helpers.fetchMember(originalAuthorSettings.profile.guildID, originalAuthorID)
-  if (!originalAuthor) return
-  
-  const originalGuild = await db.guilds.get(originalAuthorSettings.profile.guildID)
-  if (!originalGuild?.notificationChannelID) return;
+  const originalAuthorSettings = await db.users.get(originalAuthorID);
+  if (!originalAuthorSettings) return;
+
+  const originalAuthor = await botCache.helpers.fetchMember(originalAuthorSettings.profile.guildID, originalAuthorID);
+  if (!originalAuthor) return;
+
+  const originalGuildSettings = await db.guilds.get(originalAuthorSettings.profile.guildID);
+  if (!originalGuildSettings?.notificationChannelID) return;
 
   switch (emoji.name) {
     case "❤":
-                // Send a notification to the original authors notification channel saying x user liked it
-                await notificationChannel.send(`${user.tag} has liked your post in ${message.guild.name} guild.`);
-                // Post the original embed so the user knows which post was liked
-                await notificationChannel.send(postEmbed);
-      
-                // Send a response like Thank you for liking this users post delete it
-                return message.channel
-                  .send(`Thank you for liking this user's post.`)
-                  .then((response) => (response as Message).delete({ timeout: 5000 }));
-  }
-}
+      const heartEmbed = new Embed()
+        .setAuthor(member.tag, member.avatarURL)
+        .setTitle("❤ your Post")
+        .setDescription(
+          `[${
+            postEmbed.description.length > 50 ? postEmbed?.description.substring(0, 50) + "..." : postEmbed?.description
+          }](${message?.link})`
+        );
 
+      await sendMessage(originalGuildSettings.notificationChannelID, { embed: heartEmbed }).catch(console.log);
 
-  public async handleProfileReaction(message: KlasaMessage, user: KlasaUser, emoji: RawEmoji) {
-    try {
+      // Send a response like Thank you for liking this users post delete it
+      return message?.alertReply("Thank you for liking this user's post.", 5);
+    case "🔁":
+      const userSettings = await db.users.get(userID);
+      if (!userSettings) return;
 
-      const notificationChannelID = originalServer.settings.get(
-        GuildSettings.Channels.NotificationsID
-      ) as GuildSettings.Channels.TextChannelID;
-      if (!notificationChannelID) return null;
+      const guildSettings = await db.guilds.get(userSettings.profile.guildID);
+      if (!guildSettings?.wallChannelID)
+        return message?.alertReply(
+          "You have not set up your own profile server, so I am unable to repost this to your #wall. Please invite me to your private server and run the **.createnetwork** command.",
+          5000
+        );
 
-      const notificationChannel = this.client.channels.get(notificationChannelID) as TextChannel;
-      if (!notificationChannel) return null;
+      // Repost this message on the user, that reacted, wall channel
+      const repost = await sendMessage(guildSettings.wallChannelID, { embed: postEmbed });
+      repost.addReactions(["❤", "🔁", "➕"], true);
 
-      switch (emoji.name) {
-        case "❤": {
-          // Send a notification to the original authors notification channel saying x user liked it
-          await notificationChannel.send(`${user.tag} has liked your post in ${message.guild.name} guild.`);
-          // Post the original embed so the user knows which post was liked
-          await notificationChannel.send(postEmbed);
+      const repostEmbed = new Embed()
+        .setAuthor(member.tag, member.avatarURL)
+        .setTitle("🔁 your Post")
+        // TODO: `${user.tag} has reposted your post from ${message.guild.name} guild and it has now been shared to ${reactorGuild ? reactorGuild.name : "**Server Not Found**"} guild.`
+        .setDescription(`${member.tag} has reposted your post`);
 
-          // Send a response like Thank you for liking this users post delete it
-          return message.channel
-            .send(`Thank you for liking this user's post.`)
-            .then((response) => (response as Message).delete({ timeout: 5000 }));
-        }
-        case "🔁": {
-          const serverID = user.settings.get(UserSettings.Profile.ServerID) as UserSettings.Profile.ServerID;
-          if (!serverID) return null;
+      await sendMessage(originalGuildSettings.notificationChannelID, { embed: repostEmbed }).catch(console.log);
 
-          const reposterServer = this.client.guilds.get(serverID);
-          if (!reposterServer) return null;
+      // Send a response and then delete it
+      return message?.alertReply(
+        `Thank you for reposting this user's post. You can now find it on your own wall channel <#${guildSettings?.wallChannelID}>.`,
+        5000
+      );
+    case "➕": {
+      // Follow the original author profile server
+      const userSettings = await db.users.get(userID);
+      if (!userSettings) return;
 
-          const wallChannelID = reposterServer.settings.get(
-            GuildSettings.Channels.WallID
-          ) as GuildSettings.Channels.TextChannelID;
-
-          // If the reacting user doesnt have a wall channel tell cancel out
-          const wallChannel = this.client.channels.get(wallChannelID) as TextChannel;
-          if (!wallChannelID || !wallChannel)
-            return message.channel
-              .send(
-                "You have not set up your own profile server, so I am unable to repost this to your #wall. Please invite me to your private server and run the **.createnetwork** command."
-              )
-              .then((response) => (response as Message).delete({ timeout: 5000 }));
-
-          // Repost this message on the user, that reacted, wall channel
-          const reposted = (await wallChannel.send(postEmbed)) as Message;
-          for (const reaction of ["❤", "🔁", "➕"]) reposted.react(reaction);
-
-          // Send a notification to the original authors notification channel saying x user reposted
-          if (notificationChannelID) {
-            const notificationChannel = this.client.channels.get(notificationChannelID) as TextChannel;
-            if (!notificationChannel) return null;
-            // Send a notification to the original authors notification channel saying x user liked it
-            const [reactorGuild] = await user.settings.resolve(UserSettings.Profile.ServerID);
-
-            await notificationChannel.send(
-              `${user.tag} has reposted your post from ${message.guild.name} guild and it has now been shared to ${
-                reactorGuild ? reactorGuild.name : "**Server Not Found**"
-              } guild.`
-            );
-            // Post the original embed so the user knows which post was liked
-            await notificationChannel.send(postEmbed);
-          }
-
-          // Send a response and then delete it
-          return message.channel
-            .send(
-              `Thank you for reposting this user's post. You can now find it on your own wall channel <#${wallChannelID}>.`
-            )
-            .then((response) => (response as Message).delete({ timeout: 5000 }));
-        }
-        case "➕": {
-          // Follow the original author profile server
-          const following = user.settings.get(UserSettings.Following) as UserSettings.Following;
-          await user.settings.update(UserSettings.Following, originalAuthorID, { throwOnError: true });
-
-          // Remove the reaction that the user added so they can react again
-          await message.reactions.get(emoji.name).users.remove(user.id);
-          // Send a response saying you are now following or no longer following
-          return message.channel
-            .send(`You are ${following.includes(originalAuthorID) ? "no longer" : "now"} following this user.`)
-            .then((response) => (response as Message).delete({ timeout: 5000 }));
-        }
-        default:
-          return null;
+      // Check if the users already follows the user specified in the command
+      const isAlreadyFollowing = userSettings?.following.includes(originalAuthorID);
+      if (isAlreadyFollowing) {
+        userSettings.following = userSettings?.following.filter((id) => id !== originalAuthorID);
+      } else {
+        userSettings.following.push(originalAuthorID);
       }
-    } catch (error) {
-      this.client.emit("error", error);
-      return message.channel
-        .send("Something went wrong. I have alerted my developers.")
-        .then((response) => (response as Message).delete({ timeout: 5000 }));
+
+      await db.users.update(userID, { following: userSettings.following });
+
+      await removeReaction(uncachedMessage.channelID, uncachedMessage.id, "➕").catch(console.log);
+      return message?.alertReply(`You are ${isAlreadyFollowing ? "no longer" : "now"} following this user.`, 5);
     }
   }
 }
