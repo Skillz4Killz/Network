@@ -1,5 +1,4 @@
-import { sendMessage } from "https://deno.land/x/discordeno@10.3.0/src/api/handlers/channel.ts";
-import { botCache } from "../../deps.ts";
+import { botCache, rawAvatarURL, sendMessage } from "../../deps.ts";
 import { db } from "../database/database.ts";
 import { Embed } from "../utils/Embed.ts";
 import { translate } from "../utils/i18next.ts";
@@ -23,13 +22,14 @@ botCache.monitors.set("wallpost", {
     const embed = new Embed()
       .setAuthor(
         message.member?.tag ?? `${message.author.username}#${message.author.discriminator}`,
-        message.author.avatar ?? ""
+        rawAvatarURL(message.author.id, message.author.discriminator, message.author.avatar)
       )
       .setColor("RANDOM")
       .setDescription(message.content)
-      .setImage(imageURL)
+      .setImage(imageURL ?? "")
       .setTimestamp()
       .setFooter(message.author.id);
+    console.log(embed);
 
     // Resend the message as an embed
     const posted = await message.send({ embed });
